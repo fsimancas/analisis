@@ -12,6 +12,7 @@ import { TeamPage } from './pages/team'
 import { TeamsPage } from './pages/teams'
 import { AccountPage } from './pages/account'
 import { AdminPage } from './pages/admin'
+import { DemoPage } from './pages/demo'
 
 const titles: Record<string, string> = {
   '/': 'Terminal de análisis',
@@ -24,6 +25,13 @@ const titles: Record<string, string> = {
 }
 
 export default function App() {
+  const location = useLocation()
+  if (location.pathname === '/demo') return <DemoPage />
+
+  return <PlatformShell />
+}
+
+function PlatformShell() {
   const realtime = useRealtime()
   const location = useLocation()
   const title = titles[location.pathname] ?? (location.pathname.startsWith('/matches/') ? 'Ficha del partido' : 'Ficha del equipo')

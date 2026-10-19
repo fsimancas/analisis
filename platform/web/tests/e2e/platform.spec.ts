@@ -98,3 +98,27 @@ test('administrator can access every control-plane section', async ({ page }) =>
   )
   expect(serious).toEqual([])
 })
+
+test('interactive product demo works without backend data', async ({ page }, testInfo) => {
+  await page.goto('/demo')
+  await expect(page.getByRole('heading', { name: 'Inteligencia de partido' })).toBeVisible()
+  await expect(page.getByText('Arsenal', { exact: false }).first()).toBeVisible()
+
+  await page.getByLabel('Filtrar liga').selectOption('Primera A')
+  await expect(page.getByText('Atlético Nacional', { exact: false }).first()).toBeVisible()
+  await expect(page.getByText('Real Madrid', { exact: false })).toHaveCount(0)
+
+  await page.getByRole('button', { name: 'Simular escenario' }).click()
+  await expect(page.getByRole('status')).toContainText('Simulación preparada')
+  await page.getByRole('button', { name: 'Crear alerta de señal' }).click()
+  await expect(page.getByRole('button', { name: 'Alerta activada' })).toBeVisible()
+
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)
+  expect(overflow).toBe(false)
+  const results = await new AxeBuilder({ page }).analyze()
+  const serious = results.violations.filter((violation) =>
+    ['critical', 'serious'].includes(violation.impact ?? ''),
+  )
+  expect(serious).toEqual([])
+  await page.screenshot({ path: testInfo.outputPath('demo.png'), fullPage: true })
+})
