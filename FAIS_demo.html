@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Demostración HTML5 autocontenida de FAIS Sports Intelligence">
+  <title>FAIS — Sports Intelligence Terminal</title>
+  <style>
+    :root {
+      --bg:#05080d; --surface:#090e17; --surface-2:#0c1320; --line:#1b293d;
+      --text:#e8eef8; --muted:#8fa1b8; --dim:#667891; --cyan:#22d3ee;
+      --cyan-soft:rgba(34,211,238,.09); --green:#2dd4bf; --amber:#fbbf24;
+      --violet:#a78bfa; --red:#fb7185; --radius:13px;
+    }
+    *{box-sizing:border-box} html{background:var(--bg);scroll-behavior:smooth}
+    body{margin:0;min-width:320px;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
+    button,input,select{font:inherit} button,select,input[type=range]{cursor:pointer}
+    button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+    .backdrop{position:fixed;inset:0;pointer-events:none;opacity:.45;background:radial-gradient(circle at 72% 0,rgba(8,145,178,.16),transparent 30%),linear-gradient(rgba(30,41,59,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(30,41,59,.14) 1px,transparent 1px);background-size:auto,40px 40px,40px 40px}
+    .sidebar{position:fixed;z-index:50;inset:0 auto 0 0;width:255px;padding:18px 16px;border-right:1px solid rgba(255,255,255,.06);background:rgba(7,11,18,.96);backdrop-filter:blur(14px)}
+    .brand{height:52px;display:flex;align-items:center;gap:12px}.logo{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#67e8f9,#06b6d4);color:#06202a;font-weight:900;box-shadow:0 0 30px rgba(34,211,238,.18)}
+    .brand-name{font-weight:800;letter-spacing:.2em}.eyebrow{color:var(--cyan);font-size:9px;letter-spacing:.25em;text-transform:uppercase}
+    .workspace{margin-top:26px;padding:12px;border:1px solid rgba(34,211,238,.18);border-radius:10px;background:rgba(34,211,238,.035)}
+    .workspace-label{display:flex;justify-content:space-between;color:var(--muted);font-size:9px;letter-spacing:.16em;text-transform:uppercase}.workspace p{margin:6px 0 0;font-size:12px}
+    .nav{margin-top:23px;display:grid;gap:4px}.nav button{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--muted);text-align:left;font-size:12px;transition:.18s}.nav button:hover{background:rgba(255,255,255,.035);color:var(--text)}.nav button.active{border-color:rgba(34,211,238,.2);background:var(--cyan-soft);color:#a5f3fc}.nav .ico{width:18px;text-align:center;font-size:15px}.badge{margin-left:auto;padding:2px 6px;border-radius:999px;background:rgba(251,113,133,.2);color:#fecdd3;font:9px ui-monospace,monospace}
+    .demo-status{position:absolute;right:16px;bottom:16px;left:16px;padding:13px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}.demo-status strong{display:flex;align-items:center;gap:8px;color:#5eead4;font-size:10px;letter-spacing:.08em;text-transform:uppercase}.dot{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 0 5px rgba(52,211,153,.08)}.demo-status p{margin:9px 0 0;color:var(--muted);font-size:10px;line-height:1.6}
+    .main{position:relative;margin-left:255px;min-height:100vh}.topbar{position:sticky;z-index:40;top:0;height:66px;display:flex;align-items:center;gap:14px;padding:0 24px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(5,9,15,.88);backdrop-filter:blur(15px)}
+    .search{position:relative;width:min(450px,50vw)}.search span{position:absolute;left:13px;top:9px;color:var(--dim)}.search input{width:100%;padding:10px 12px 10px 36px;border:1px solid var(--line);border-radius:9px;background:#060b13;color:var(--text);font-size:11px}.search input::placeholder{color:#53647c}
+    .top-actions{margin-left:auto;display:flex;align-items:center;gap:9px}.live-pill{padding:6px 10px;border:1px solid rgba(45,212,191,.22);border-radius:999px;background:rgba(45,212,191,.06);color:#5eead4;font:9px ui-monospace,monospace;letter-spacing:.08em}.icon-btn,.avatar,.menu-btn{border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--muted)}.icon-btn{position:relative;width:34px;height:34px}.counter{position:absolute;right:-5px;top:-6px;display:grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#e11d48;color:white;font-size:8px}.avatar{width:34px;height:34px;border:0;background:linear-gradient(145deg,var(--violet),var(--cyan));color:#06111d;font-size:10px;font-weight:800}.menu-btn,.close-menu{display:none}
+    .content{max-width:1660px;margin:auto;padding:25px}.heading-row{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}.section-label{display:flex;align-items:center;gap:7px;color:var(--cyan);font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}.pulse{width:8px;height:8px;border:2px solid var(--cyan);border-radius:50%}.heading-row h1{margin:8px 0 0;font-size:30px;line-height:1.1;letter-spacing:-.035em}.subline{margin:6px 0 0;color:var(--muted);font-size:11px}
+    .tabs{display:flex;padding:4px;border:1px solid var(--line);border-radius:9px;background:#060b13}.tabs button{padding:7px 13px;border:0;border-radius:6px;background:transparent;color:var(--muted);font-size:10px}.tabs button.active{background:#1a2638;color:white;box-shadow:0 2px 8px #0006}
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}.metric,.panel{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,rgba(14,23,38,.93),rgba(7,12,20,.96));box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}.metric{padding:16px;transition:.18s}.metric:hover{transform:translateY(-2px);border-color:#31415a}.metric-top{display:flex;justify-content:space-between}.metric-label{color:var(--muted);font-size:9px;letter-spacing:.15em;text-transform:uppercase}.metric-value{margin-top:8px;font:600 25px ui-monospace,SFMono-Regular,Consolas,monospace}.metric-icon{width:32px;height:32px;display:grid;place-items:center;border-radius:8px;font-size:15px}.cyan{color:#67e8f9;background:rgba(34,211,238,.1)}.amber{color:#fde047;background:rgba(251,191,36,.1)}.green{color:#5eead4;background:rgba(45,212,191,.1)}.violet{color:#c4b5fd;background:rgba(167,139,250,.1)}.metric-detail{margin-top:14px;color:var(--muted);font-size:10px}
+    .grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;margin-top:14px}.market{overflow:hidden}.panel-head{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--line)}.panel-head h2,.detail h2{margin:0;font-size:14px}.panel-head p,.detail-sub{margin:4px 0 0;color:var(--muted);font-size:10px}.filters{margin-left:auto;display:flex;gap:8px}.filters select,.filter-btn{padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:#060b13;color:var(--muted);font-size:10px}.filter-btn{width:34px;padding:0}
+    .table-wrap{overflow:auto;min-height:490px}table{width:100%;min-width:830px;border-collapse:collapse}th{padding:11px 14px;color:var(--muted);font-size:8px;font-weight:500;letter-spacing:.13em;text-align:left;text-transform:uppercase}td{padding:13px 14px;border-top:1px solid rgba(27,41,61,.75);font-size:11px}tbody tr{cursor:pointer;transition:.14s}tbody tr:hover,tbody tr.selected{background:rgba(34,211,238,.035)}.match-cell{display:flex;align-items:center;gap:10px}.star{padding:0;border:0;background:transparent;color:#53647c;font-size:16px}.star.on{color:var(--amber)}.minute{width:40px;color:var(--green);font:10px ui-monospace,monospace}.teams{font-weight:550}.league{margin-top:5px;color:var(--muted);font-size:8px;letter-spacing:.1em;text-transform:uppercase}.spark{width:88px;height:35px}.probs{display:flex;gap:8px}.prob{width:57px}.prob-top{display:flex;justify-content:space-between;color:var(--muted);font:9px ui-monospace,monospace}.bar{height:4px;margin-top:5px;overflow:hidden;border-radius:5px;background:#1a2638}.fill{height:100%;border-radius:5px}.xg,.edge{font:10px ui-monospace,monospace}.xg{color:var(--muted)}.edge{color:#5eead4;text-align:right}.signal{display:inline-block;padding:5px 7px;border:1px solid rgba(34,211,238,.2);border-radius:5px;background:rgba(34,211,238,.05);color:#67e8f9;font:9px ui-monospace,monospace}.empty{display:none;padding:80px 20px;text-align:center;color:var(--muted)}
+    .side-panels{display:grid;align-content:start;gap:14px}.detail,.health{padding:16px}.detail-head{display:flex;justify-content:space-between}.model-label{color:var(--cyan);font-size:9px;letter-spacing:.18em;text-transform:uppercase}.status{height:max-content;padding:5px 8px;border:1px solid rgba(45,212,191,.2);border-radius:5px;background:rgba(45,212,191,.06);color:#5eead4;font:9px ui-monospace,monospace}.confidence{margin-top:20px;padding:16px;border:1px solid var(--line);border-radius:10px;background:rgba(3,7,12,.35)}.confidence-head{display:flex;align-items:flex-end;justify-content:space-between}.small-label{color:var(--muted);font-size:8px;letter-spacing:.13em;text-transform:uppercase}.confidence-value{margin-top:5px;font:600 31px ui-monospace,monospace}.range{width:100%;margin:17px 0 0;accent-color:var(--cyan)}.range-ends{display:flex;justify-content:space-between;color:#62728a;font-size:7px;text-transform:uppercase}.outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:14px}.outcome{padding:10px 4px;border:1px solid var(--line);border-radius:9px;text-align:center}.outcome span{color:var(--muted);font-size:8px}.outcome strong{display:block;margin-top:7px;font:12px ui-monospace,monospace}.primary,.secondary{width:100%;margin-top:14px;padding:11px;border-radius:8px;font-size:11px;font-weight:700}.primary{border:0;background:var(--cyan);color:#05212a}.primary:hover{background:#67e8f9}.secondary{margin-top:8px;border:1px solid var(--line);background:transparent;color:var(--muted)}.secondary.active{border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.06);color:#fde68a}.health-title{display:flex;justify-content:space-between;font-size:12px;font-weight:650}.health-row{margin-top:17px}.health-values{display:flex;justify-content:space-between;color:var(--muted);font-size:9px}.health-values b{color:#cad5e4;font:9px ui-monospace,monospace}.health .bar{margin-top:8px}
+    footer{display:flex;justify-content:space-between;gap:15px;margin-top:15px;padding:16px 0;border-top:1px solid var(--line);color:var(--muted);font-size:8px;letter-spacing:.13em;text-transform:uppercase}.footer-stats{display:flex;gap:20px}.toast{position:fixed;z-index:100;bottom:24px;left:50%;max-width:calc(100% - 30px);padding:12px 17px;border:1px solid rgba(34,211,238,.25);border-radius:9px;background:rgba(12,19,32,.97);color:#cffafe;font-size:11px;box-shadow:0 15px 45px #000;opacity:0;transform:translate(-50%,25px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:1100px){.metrics{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.side-panels{grid-template-columns:1fr 1fr}.table-wrap{min-height:0}}
+    @media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.22s}.sidebar.open{transform:translateX(0);box-shadow:30px 0 80px #000}.main{margin-left:0}.menu-btn,.close-menu{display:grid;place-items:center}.menu-btn{width:35px;height:35px}.close-menu{position:absolute;top:22px;right:15px;border:0;background:transparent;color:var(--muted);font-size:19px}.search{display:none}.content{padding:18px 14px}.heading-row{align-items:flex-start;flex-direction:column}.heading-row h1{font-size:25px}.tabs{width:100%}.tabs button{flex:1}.metrics{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.side-panels{grid-template-columns:1fr}.live-pill{display:none}footer{flex-direction:column}.footer-stats{flex-wrap:wrap;gap:12px}}
+    @media(max-width:450px){.metrics{grid-template-columns:1fr}.topbar{padding:0 14px}.metric{padding:14px}.panel-head{align-items:flex-start;flex-direction:column}.filters{margin-left:0;width:100%}.filters select{flex:1}.footer-stats{font-size:7px}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+  <aside class="sidebar" id="sidebar">
+    <button class="close-menu" id="closeMenu" aria-label="Cerrar menú">×</button>
+    <div class="brand"><div class="logo">F</div><div><div class="brand-name">FAIS</div><div class="eyebrow">Sports terminal</div></div></div>
+    <div class="workspace"><div class="workspace-label"><span>Workspace</span><span>⌄</span></div><p>Football Intelligence</p></div>
+    <nav class="nav" aria-label="Navegación principal">
+      <button class="active" data-section="Centro de mando"><span class="ico">▦</span>Centro de mando</button>
+      <button data-section="Partidos"><span class="ico">⌁</span>Partidos</button>
+      <button data-section="Mercados IA"><span class="ico">✣</span>Mercados IA</button>
+      <button data-section="Equipos"><span class="ico">♙</span>Equipos</button>
+      <button data-section="Alertas"><span class="ico">♢</span>Alertas <span class="badge">3</span></button>
+    </nav>
+    <div class="demo-status"><strong><span class="dot"></span>Demo autónoma</strong><p>Datos simulados. Ninguna acción modifica archivos ni requiere conexión.</p></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" id="openMenu" aria-label="Abrir menú">☰</button>
+      <label class="search"><span>⌕</span><input id="search" type="search" placeholder="Buscar equipo, competición o partido…" aria-label="Buscar equipos o partidos"></label>
+      <div class="top-actions"><span class="live-pill">◉ LIVE ENGINE</span><button class="icon-btn" id="notifications" aria-label="Notificaciones, 3 nuevas">♢<span class="counter">3</span></button><button class="avatar" id="profile" aria-label="Abrir perfil de demostración">FS</button></div>
+    </header>
+
+    <div class="content">
+      <div class="heading-row"><div><div class="section-label"><span class="pulse"></span><span id="currentSection">Centro de mando</span></div><h1>Inteligencia de partido</h1><p class="subline">19 octubre 2026 · 148 partidos monitorizados</p></div><div class="tabs" role="group" aria-label="Periodo"><button class="active" data-time="live">En vivo</button><button data-time="next">Próximos</button><button data-time="finished">Finalizados</button></div></div>
+
+      <section class="metrics" aria-label="Métricas principales">
+        <article class="metric"><div class="metric-top"><div><div class="metric-label">Partidos en vivo</div><div class="metric-value">24</div></div><span class="metric-icon cyan">⌁</span></div><div class="metric-detail">+6 desde las 18:00</div></article>
+        <article class="metric"><div class="metric-top"><div><div class="metric-label">Señales activas</div><div class="metric-value">11</div></div><span class="metric-icon amber">ϟ</span></div><div class="metric-detail">4 de alta confianza</div></article>
+        <article class="metric"><div class="metric-top"><div><div class="metric-label">Precisión 30D</div><div class="metric-value">68.7%</div></div><span class="metric-icon green">◎</span></div><div class="metric-detail">+2.4% vs periodo anterior</div></article>
+        <article class="metric"><div class="metric-top"><div><div class="metric-label">Modelos operativos</div><div class="metric-value">7 / 8</div></div><span class="metric-icon violet">◴</span></div><div class="metric-detail">1 en reentrenamiento</div></article>
+      </section>
+
+      <section class="grid">
+        <div class="panel market"><div class="panel-head"><div><h2>Mercado de partidos</h2><p>Probabilidad 1X2 y ventaja estimada por el motor</p></div><div class="filters"><select id="leagueFilter" aria-label="Filtrar por competición"><option value="all">Todas las ligas</option><option>Premier League</option><option>LaLiga</option><option>Champions League</option><option>Primera A</option><option>Serie A</option></select><button class="filter-btn" id="advanced" aria-label="Filtros avanzados">☷</button></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Estado / partido</th><th>Momentum</th><th>Probabilidad modelo</th><th>xG</th><th>Señal</th><th style="text-align:right">Edge</th></tr></thead><tbody id="matchRows"></tbody></table><div class="empty" id="empty">No hay partidos para este filtro.</div></div>
+        </div>
+
+        <div class="side-panels">
+          <article class="panel detail"><div class="detail-head"><div><div class="model-label">Análisis seleccionado</div><h2 id="detailTitle">Arsenal vs Liverpool</h2><p class="detail-sub" id="detailSub">Premier League · Modelo FAIS Ensemble v3.8</p></div><span class="status" id="detailStatus">LIVE</span></div>
+            <div class="confidence"><div class="confidence-head"><div><div class="small-label">Confianza ajustada</div><div class="confidence-value"><span id="confidenceValue">72</span>%</div></div><svg class="spark" viewBox="0 0 100 42" aria-label="Tendencia de confianza"><polyline fill="none" stroke="#2dd4bf" stroke-width="2" points="0,28 10,23 20,26 30,18 40,21 50,14 60,17 70,10 80,13 90,7 100,5"/><circle cx="100" cy="5" r="2.5" fill="#2dd4bf"/></svg></div><input class="range" id="confidence" type="range" min="50" max="95" value="72" aria-label="Ajustar confianza del escenario"><div class="range-ends"><span>Conservador</span><span>Agresivo</span></div></div>
+            <div class="outcomes"><div class="outcome"><span>Local</span><strong id="probHome">62%</strong></div><div class="outcome"><span>Empate</span><strong id="probDraw">23%</strong></div><div class="outcome"><span>Visitante</span><strong id="probAway">15%</strong></div></div>
+            <button class="primary" id="simulate">✣ &nbsp; Simular escenario</button><button class="secondary" id="alert">♢ &nbsp; Crear alerta de señal</button>
+          </article>
+          <article class="panel health"><div class="health-title"><span>Salud del sistema</span><span style="color:var(--green)">♧</span></div><div class="health-row"><div class="health-values"><span>Ingesta de datos</span><b>99.98%</b></div><div class="bar"><div class="fill" style="width:99%;background:var(--green)"></div></div></div><div class="health-row"><div class="health-values"><span>Motor predictivo</span><b>42 ms</b></div><div class="bar"><div class="fill" style="width:94%;background:var(--cyan)"></div></div></div><div class="health-row"><div class="health-values"><span>Eventos realtime</span><b>12.4k/m</b></div><div class="bar"><div class="fill" style="width:88%;background:var(--violet)"></div></div></div></article>
+        </div>
+      </section>
+      <footer><span>FAIS Terminal · Vista HTML5 autónoma</span><span class="footer-stats"><span>◴ Actualizado ahora</span><span>♜ 48 ligas</span><span>⌁ 7 modelos</span></span></footer>
+    </div>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    'use strict';
+    const matches = [
+      {id:1,time:"67'",status:'LIVE',league:'Premier League',country:'ING',home:'Arsenal',away:'Liverpool',score:'2 — 1',form:[22,38,31,52,47,66,58,79],p:[62,23,15],xg:'1.84 · 0.96',signal:'LOCAL +0.5',edge:8.4},
+      {id:2,time:"31'",status:'LIVE',league:'LaLiga',country:'ESP',home:'Real Madrid',away:'Real Sociedad',score:'1 — 0',form:[18,26,34,29,47,51,67,62],p:[71,19,10],xg:'1.27 · 0.41',signal:'OVER 2.5',edge:6.7},
+      {id:3,time:'20:00',status:'PRE',league:'Champions League',country:'EUR',home:'Inter',away:'Bayern München',score:'—',form:[55,41,46,39,48,43,35,44],p:[36,29,35],xg:'1.43 · 1.39',signal:'SIN VENTAJA',edge:1.2},
+      {id:4,time:'21:15',status:'PRE',league:'Primera A',country:'COL',home:'Atlético Nacional',away:'Millonarios',score:'—',form:[17,28,24,37,32,48,44,57],p:[48,31,21],xg:'1.51 · 0.92',signal:'LOCAL DNB',edge:5.1},
+      {id:5,time:'FT',status:'FT',league:'Serie A',country:'ITA',home:'AC Milan',away:'Atalanta',score:'2 — 2',form:[62,47,52,41,44,35,42,38],p:[34,37,29],xg:'1.68 · 1.74',signal:'CERRADO',edge:0}
+    ];
+    let selected = 1, watched = new Set([1,4]), timeFilter = 'live', toastTimer;
+    const $ = id => document.getElementById(id);
+    function spark(values, positive){const points=values.map((v,i)=>`${i*(100/(values.length-1))},${40-v*.38}`).join(' ');const color=positive?'#2dd4bf':'#fb7185';return `<svg class="spark" viewBox="0 0 100 42" aria-label="Tendencia"><polyline fill="none" stroke="${color}" stroke-width="2" points="${points}"/><circle cx="100" cy="${40-values.at(-1)*.38}" r="2.5" fill="${color}"/></svg>`}
+    function probability(value,label,color){return `<div class="prob"><div class="prob-top"><span>${label}</span><span>${value}%</span></div><div class="bar"><div class="fill" style="width:${value}%;background:${color}"></div></div></div>`}
+    function visibleMatches(){const league=$('leagueFilter').value;return matches.filter(m=>(league==='all'||m.league===league)&&(timeFilter==='finished'?m.status==='FT':timeFilter==='next'?m.status==='PRE':m.status!=='FT'))}
+    function render(){const data=visibleMatches();$('matchRows').innerHTML=data.map(m=>`<tr data-id="${m.id}" class="${m.id===selected?'selected':''}"><td><div class="match-cell"><button class="star ${watched.has(m.id)?'on':''}" data-star="${m.id}" aria-label="${watched.has(m.id)?'Quitar de':'Añadir a'} seguimiento">★</button><span class="minute">${m.time}</span><div><div class="teams">${m.home} &nbsp; ${m.score} &nbsp; ${m.away}</div><div class="league">${m.country} · ${m.league}</div></div></div></td><td>${spark(m.form,m.edge>3)}</td><td><div class="probs">${probability(m.p[0],'1','#22d3ee')}${probability(m.p[1],'X','#a78bfa')}${probability(m.p[2],'2','#fb7185')}</div></td><td class="xg">${m.xg}</td><td><span class="signal">${m.signal}</span></td><td class="edge">${m.edge?'+'+m.edge+'%':'—'}</td></tr>`).join('');$('empty').style.display=data.length?'none':'block';document.querySelectorAll('tbody tr').forEach(row=>row.onclick=()=>selectMatch(Number(row.dataset.id)));document.querySelectorAll('[data-star]').forEach(btn=>btn.onclick=e=>{e.stopPropagation();const id=Number(btn.dataset.star);watched.has(id)?watched.delete(id):watched.add(id);render()})}
+    function selectMatch(id){selected=id;const m=matches.find(item=>item.id===id);$('detailTitle').textContent=`${m.home} vs ${m.away}`;$('detailSub').textContent=`${m.league} · Modelo FAIS Ensemble v3.8`;$('detailStatus').textContent=m.status;$('probHome').textContent=m.p[0]+'%';$('probDraw').textContent=m.p[1]+'%';$('probAway').textContent=m.p[2]+'%';render()}
+    function toast(message){clearTimeout(toastTimer);$('toast').textContent=message;$('toast').classList.add('show');toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2400)}
+    $('leagueFilter').onchange=render;
+    document.querySelectorAll('[data-time]').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('[data-time]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');timeFilter=btn.dataset.time;render()});
+    document.querySelectorAll('.nav button').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');$('currentSection').textContent=btn.dataset.section;$('sidebar').classList.remove('open');toast(`${btn.dataset.section}: interacción de demostración`)});
+    $('confidence').oninput=e=>$('confidenceValue').textContent=e.target.value;
+    $('simulate').onclick=()=>toast(`Simulación preparada al ${$('confidence').value}% de confianza`);
+    $('alert').onclick=()=>{const active=$('alert').classList.toggle('active');$('alert').innerHTML=active?'♢ &nbsp; Alerta activada':'♢ &nbsp; Crear alerta de señal';toast(active?'Alerta visual activada':'Alerta desactivada')};
+    $('advanced').onclick=()=>toast('Filtros avanzados preparados en la demostración');
+    $('notifications').onclick=()=>toast('Tienes 3 señales nuevas');$('profile').onclick=()=>toast('Perfil de demostración');
+    $('search').oninput=e=>{const q=e.target.value.trim().toLowerCase();document.querySelectorAll('#matchRows tr').forEach(row=>{const m=matches.find(x=>x.id===Number(row.dataset.id));row.style.display=!q||`${m.home} ${m.away} ${m.league}`.toLowerCase().includes(q)?'':'none'})};
+    $('openMenu').onclick=()=>$('sidebar').classList.add('open');$('closeMenu').onclick=()=>$('sidebar').classList.remove('open');
+    render();
+  </script>
+</body>
+</html>
