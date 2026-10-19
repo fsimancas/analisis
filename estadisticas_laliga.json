@@ -1,0 +1,2653 @@
+{
+  "competition": {
+    "id": 84,
+    "pais_id": 29,
+    "pais_nombre": "España",
+    "nombre_betplay": "La Liga",
+    "nombre_flashscore": "LaLiga EA Sports",
+    "link_flashscore": "https://www.flashscore.co/futbol/espana/laliga-ea-sports/"
+  },
+  "league_stats": {
+    "matches_played": 79,
+    "total_matches": 380,
+    "completion_pct": "20.8%",
+    "home_wins_pct": "44%",
+    "draws_pct": "28%",
+    "away_wins_pct": "28%",
+    "total_goals": 241,
+    "goals_per_match": 3.05,
+    "home_goals_per_match": 1.73,
+    "away_goals_per_match": 1.32,
+    "over_1_5_pct": "76%",
+    "over_2_5_pct": "57%",
+    "over_3_5_pct": "39%",
+    "btts_pct": "58%"
+  },
+  "league_table": [
+    {
+      "team": "Barcelona",
+      "GP": 8,
+      "W": 8,
+      "D": 0,
+      "L": 0,
+      "GF": 34,
+      "GA": 7,
+      "GD": 27,
+      "Pts": 24,
+      "PPG": 3.0,
+      "last_8_PPG": 3.0,
+      "CS": "50%",
+      "SR": "100%",
+      "MPP": 114,
+      "rank": 1
+    },
+    {
+      "team": "Atlético de Madrid",
+      "GP": 8,
+      "W": 6,
+      "D": 1,
+      "L": 1,
+      "GF": 18,
+      "GA": 8,
+      "GD": 10,
+      "Pts": 19,
+      "PPG": 2.38,
+      "last_8_PPG": 2.38,
+      "CS": "38%",
+      "SR": "88%",
+      "MPP": 109,
+      "rank": 2
+    },
+    {
+      "team": "Real Betis",
+      "GP": 8,
+      "W": 6,
+      "D": 1,
+      "L": 1,
+      "GF": 14,
+      "GA": 9,
+      "GD": 5,
+      "Pts": 19,
+      "PPG": 2.38,
+      "last_8_PPG": 2.38,
+      "CS": "50%",
+      "SR": "100%",
+      "MPP": 109,
+      "rank": 3
+    },
+    {
+      "team": "Real Madrid",
+      "GP": 8,
+      "W": 6,
+      "D": 0,
+      "L": 2,
+      "GF": 19,
+      "GA": 8,
+      "GD": 11,
+      "Pts": 18,
+      "PPG": 2.25,
+      "last_8_PPG": 2.25,
+      "CS": "25%",
+      "SR": "88%",
+      "MPP": 108,
+      "rank": 4
+    },
+    {
+      "team": "Sevilla",
+      "GP": 8,
+      "W": 4,
+      "D": 2,
+      "L": 2,
+      "GF": 13,
+      "GA": 12,
+      "GD": 1,
+      "Pts": 14,
+      "PPG": 1.75,
+      "last_8_PPG": 1.75,
+      "CS": "25%",
+      "SR": "100%",
+      "MPP": 104,
+      "rank": 5
+    },
+    {
+      "team": "Real Sociedad",
+      "GP": 8,
+      "W": 4,
+      "D": 1,
+      "L": 3,
+      "GF": 12,
+      "GA": 15,
+      "GD": -3,
+      "Pts": 13,
+      "PPG": 1.62,
+      "last_8_PPG": 1.62,
+      "CS": "12%",
+      "SR": "62%",
+      "MPP": 103,
+      "rank": 6
+    },
+    {
+      "team": "Alavés",
+      "GP": 8,
+      "W": 3,
+      "D": 2,
+      "L": 3,
+      "GF": 12,
+      "GA": 8,
+      "GD": 4,
+      "Pts": 11,
+      "PPG": 1.38,
+      "last_8_PPG": 1.38,
+      "CS": "38%",
+      "SR": "75%",
+      "MPP": 101,
+      "rank": 7
+    },
+    {
+      "team": "Deportivo de A Coruña",
+      "GP": 8,
+      "W": 2,
+      "D": 4,
+      "L": 2,
+      "GF": 12,
+      "GA": 11,
+      "GD": 1,
+      "Pts": 10,
+      "PPG": 1.25,
+      "last_8_PPG": 1.25,
+      "CS": "0%",
+      "SR": "88%",
+      "MPP": 100,
+      "rank": 8
+    },
+    {
+      "team": "Athletic Club",
+      "GP": 7,
+      "W": 2,
+      "D": 3,
+      "L": 2,
+      "GF": 7,
+      "GA": 6,
+      "GD": 1,
+      "Pts": 9,
+      "PPG": 1.29,
+      "last_8_PPG": 1.29,
+      "CS": "57%",
+      "SR": "57%",
+      "MPP": 102,
+      "rank": 9
+    },
+    {
+      "team": "Rayo Vallecano",
+      "GP": 8,
+      "W": 2,
+      "D": 3,
+      "L": 3,
+      "GF": 11,
+      "GA": 16,
+      "GD": -5,
+      "Pts": 9,
+      "PPG": 1.12,
+      "last_8_PPG": 1.12,
+      "CS": "12%",
+      "SR": "88%",
+      "MPP": 99,
+      "rank": 10
+    },
+    {
+      "team": "Celta de Vigo",
+      "GP": 8,
+      "W": 1,
+      "D": 5,
+      "L": 2,
+      "GF": 8,
+      "GA": 6,
+      "GD": 2,
+      "Pts": 8,
+      "PPG": 1.0,
+      "last_8_PPG": 1.0,
+      "CS": "50%",
+      "SR": "50%",
+      "MPP": 98,
+      "rank": 11
+    },
+    {
+      "team": "Villarreal",
+      "GP": 8,
+      "W": 2,
+      "D": 2,
+      "L": 4,
+      "GF": 13,
+      "GA": 13,
+      "GD": 0,
+      "Pts": 8,
+      "PPG": 1.0,
+      "last_8_PPG": 1.0,
+      "CS": "0%",
+      "SR": "75%",
+      "MPP": 98,
+      "rank": 12
+    },
+    {
+      "team": "Espanyol",
+      "GP": 8,
+      "W": 2,
+      "D": 2,
+      "L": 4,
+      "GF": 11,
+      "GA": 11,
+      "GD": 0,
+      "Pts": 8,
+      "PPG": 1.0,
+      "last_8_PPG": 1.0,
+      "CS": "25%",
+      "SR": "100%",
+      "MPP": 98,
+      "rank": 13
+    },
+    {
+      "team": "Getafe",
+      "GP": 8,
+      "W": 2,
+      "D": 2,
+      "L": 4,
+      "GF": 4,
+      "GA": 10,
+      "GD": -6,
+      "Pts": 8,
+      "PPG": 1.0,
+      "last_8_PPG": 1.0,
+      "CS": "25%",
+      "SR": "50%",
+      "MPP": 98,
+      "rank": 14
+    },
+    {
+      "team": "R. Racing Club",
+      "GP": 8,
+      "W": 2,
+      "D": 2,
+      "L": 4,
+      "GF": 13,
+      "GA": 23,
+      "GD": -10,
+      "Pts": 8,
+      "PPG": 1.0,
+      "last_8_PPG": 1.0,
+      "CS": "0%",
+      "SR": "75%",
+      "MPP": 98,
+      "rank": 15
+    },
+    {
+      "team": "Osasuna",
+      "GP": 8,
+      "W": 2,
+      "D": 2,
+      "L": 4,
+      "GF": 8,
+      "GA": 18,
+      "GD": -10,
+      "Pts": 8,
+      "PPG": 1.0,
+      "last_8_PPG": 1.0,
+      "CS": "25%",
+      "SR": "62%",
+      "MPP": 98,
+      "rank": 16
+    },
+    {
+      "team": "Levante",
+      "GP": 7,
+      "W": 1,
+      "D": 3,
+      "L": 3,
+      "GF": 11,
+      "GA": 15,
+      "GD": -4,
+      "Pts": 6,
+      "PPG": 0.86,
+      "last_8_PPG": 0.86,
+      "CS": "29%",
+      "SR": "57%",
+      "MPP": 99,
+      "rank": 17
+    },
+    {
+      "team": "Elche",
+      "GP": 8,
+      "W": 1,
+      "D": 3,
+      "L": 4,
+      "GF": 11,
+      "GA": 17,
+      "GD": -6,
+      "Pts": 6,
+      "PPG": 0.75,
+      "last_8_PPG": 0.75,
+      "CS": "12%",
+      "SR": "75%",
+      "MPP": 96,
+      "rank": 18
+    },
+    {
+      "team": "Valencia",
+      "GP": 8,
+      "W": 1,
+      "D": 2,
+      "L": 5,
+      "GF": 6,
+      "GA": 15,
+      "GD": -9,
+      "Pts": 5,
+      "PPG": 0.62,
+      "last_8_PPG": 0.62,
+      "CS": "25%",
+      "SR": "50%",
+      "MPP": 95,
+      "rank": 19
+    },
+    {
+      "team": "Málaga",
+      "GP": 8,
+      "W": 0,
+      "D": 4,
+      "L": 4,
+      "GF": 4,
+      "GA": 13,
+      "GD": -9,
+      "Pts": 4,
+      "PPG": 0.5,
+      "last_8_PPG": 0.5,
+      "CS": "12%",
+      "SR": "50%",
+      "MPP": 94,
+      "rank": 20
+    }
+  ],
+  "home_table": [
+    {
+      "team": "Barcelona",
+      "GP": 4,
+      "W": 4,
+      "D": 0,
+      "L": 0,
+      "GF": 17,
+      "GA": 4,
+      "GD": 13,
+      "Pts": 12,
+      "PPG": 3.0,
+      "rank": 1
+    },
+    {
+      "team": "Real Madrid",
+      "GP": 4,
+      "W": 4,
+      "D": 0,
+      "L": 0,
+      "GF": 13,
+      "GA": 2,
+      "GD": 11,
+      "Pts": 12,
+      "PPG": 3.0,
+      "rank": 2
+    },
+    {
+      "team": "Real Betis",
+      "GP": 4,
+      "W": 4,
+      "D": 0,
+      "L": 0,
+      "GF": 8,
+      "GA": 2,
+      "GD": 6,
+      "Pts": 12,
+      "PPG": 3.0,
+      "rank": 3
+    },
+    {
+      "team": "Atlético de Madrid",
+      "GP": 4,
+      "W": 3,
+      "D": 1,
+      "L": 0,
+      "GF": 10,
+      "GA": 3,
+      "GD": 7,
+      "Pts": 10,
+      "PPG": 2.5,
+      "rank": 4
+    },
+    {
+      "team": "Alavés",
+      "GP": 5,
+      "W": 3,
+      "D": 0,
+      "L": 2,
+      "GF": 10,
+      "GA": 5,
+      "GD": 5,
+      "Pts": 9,
+      "PPG": 1.8,
+      "rank": 5
+    },
+    {
+      "team": "R. Racing Club",
+      "GP": 4,
+      "W": 2,
+      "D": 2,
+      "L": 0,
+      "GF": 9,
+      "GA": 7,
+      "GD": 2,
+      "Pts": 8,
+      "PPG": 2.0,
+      "rank": 6
+    },
+    {
+      "team": "Rayo Vallecano",
+      "GP": 4,
+      "W": 2,
+      "D": 2,
+      "L": 0,
+      "GF": 6,
+      "GA": 4,
+      "GD": 2,
+      "Pts": 8,
+      "PPG": 2.0,
+      "rank": 7
+    },
+    {
+      "team": "Getafe",
+      "GP": 4,
+      "W": 2,
+      "D": 2,
+      "L": 0,
+      "GF": 4,
+      "GA": 2,
+      "GD": 2,
+      "Pts": 8,
+      "PPG": 2.0,
+      "rank": 8
+    },
+    {
+      "team": "Real Sociedad",
+      "GP": 4,
+      "W": 2,
+      "D": 1,
+      "L": 1,
+      "GF": 5,
+      "GA": 6,
+      "GD": -1,
+      "Pts": 7,
+      "PPG": 1.75,
+      "rank": 9
+    },
+    {
+      "team": "Sevilla",
+      "GP": 4,
+      "W": 2,
+      "D": 0,
+      "L": 2,
+      "GF": 5,
+      "GA": 7,
+      "GD": -2,
+      "Pts": 6,
+      "PPG": 1.5,
+      "rank": 10
+    },
+    {
+      "team": "Athletic Club",
+      "GP": 4,
+      "W": 1,
+      "D": 2,
+      "L": 1,
+      "GF": 5,
+      "GA": 4,
+      "GD": 1,
+      "Pts": 5,
+      "PPG": 1.25,
+      "rank": 11
+    },
+    {
+      "team": "Deportivo de A Coruña",
+      "GP": 4,
+      "W": 1,
+      "D": 2,
+      "L": 1,
+      "GF": 5,
+      "GA": 4,
+      "GD": 1,
+      "Pts": 5,
+      "PPG": 1.25,
+      "rank": 12
+    },
+    {
+      "team": "Osasuna",
+      "GP": 4,
+      "W": 1,
+      "D": 2,
+      "L": 1,
+      "GF": 2,
+      "GA": 3,
+      "GD": -1,
+      "Pts": 5,
+      "PPG": 1.25,
+      "rank": 13
+    },
+    {
+      "team": "Celta de Vigo",
+      "GP": 4,
+      "W": 1,
+      "D": 1,
+      "L": 2,
+      "GF": 7,
+      "GA": 5,
+      "GD": 2,
+      "Pts": 4,
+      "PPG": 1.0,
+      "rank": 14
+    },
+    {
+      "team": "Levante",
+      "GP": 3,
+      "W": 1,
+      "D": 1,
+      "L": 1,
+      "GF": 10,
+      "GA": 9,
+      "GD": 1,
+      "Pts": 4,
+      "PPG": 1.33,
+      "rank": 15
+    },
+    {
+      "team": "Espanyol",
+      "GP": 4,
+      "W": 1,
+      "D": 1,
+      "L": 2,
+      "GF": 6,
+      "GA": 6,
+      "GD": 0,
+      "Pts": 4,
+      "PPG": 1.0,
+      "rank": 16
+    },
+    {
+      "team": "Villarreal",
+      "GP": 3,
+      "W": 1,
+      "D": 0,
+      "L": 2,
+      "GF": 6,
+      "GA": 6,
+      "GD": 0,
+      "Pts": 3,
+      "PPG": 1.0,
+      "rank": 17
+    },
+    {
+      "team": "Málaga",
+      "GP": 4,
+      "W": 0,
+      "D": 3,
+      "L": 1,
+      "GF": 3,
+      "GA": 5,
+      "GD": -2,
+      "Pts": 3,
+      "PPG": 0.75,
+      "rank": 18
+    },
+    {
+      "team": "Elche",
+      "GP": 4,
+      "W": 0,
+      "D": 1,
+      "L": 3,
+      "GF": 4,
+      "GA": 11,
+      "GD": -7,
+      "Pts": 1,
+      "PPG": 0.25,
+      "rank": 19
+    },
+    {
+      "team": "Valencia",
+      "GP": 4,
+      "W": 0,
+      "D": 1,
+      "L": 3,
+      "GF": 2,
+      "GA": 9,
+      "GD": -7,
+      "Pts": 1,
+      "PPG": 0.25,
+      "rank": 20
+    }
+  ],
+  "away_table": [
+    {
+      "team": "Barcelona",
+      "GP": 4,
+      "W": 4,
+      "D": 0,
+      "L": 0,
+      "GF": 17,
+      "GA": 3,
+      "GD": 14,
+      "Pts": 12,
+      "PPG": 3.0,
+      "rank": 1
+    },
+    {
+      "team": "Atlético de Madrid",
+      "GP": 4,
+      "W": 3,
+      "D": 0,
+      "L": 1,
+      "GF": 8,
+      "GA": 5,
+      "GD": 3,
+      "Pts": 9,
+      "PPG": 2.25,
+      "rank": 2
+    },
+    {
+      "team": "Sevilla",
+      "GP": 4,
+      "W": 2,
+      "D": 2,
+      "L": 0,
+      "GF": 8,
+      "GA": 5,
+      "GD": 3,
+      "Pts": 8,
+      "PPG": 2.0,
+      "rank": 3
+    },
+    {
+      "team": "Real Betis",
+      "GP": 4,
+      "W": 2,
+      "D": 1,
+      "L": 1,
+      "GF": 6,
+      "GA": 7,
+      "GD": -1,
+      "Pts": 7,
+      "PPG": 1.75,
+      "rank": 4
+    },
+    {
+      "team": "Real Madrid",
+      "GP": 4,
+      "W": 2,
+      "D": 0,
+      "L": 2,
+      "GF": 6,
+      "GA": 6,
+      "GD": 0,
+      "Pts": 6,
+      "PPG": 1.5,
+      "rank": 5
+    },
+    {
+      "team": "Real Sociedad",
+      "GP": 4,
+      "W": 2,
+      "D": 0,
+      "L": 2,
+      "GF": 7,
+      "GA": 9,
+      "GD": -2,
+      "Pts": 6,
+      "PPG": 1.5,
+      "rank": 6
+    },
+    {
+      "team": "Elche",
+      "GP": 4,
+      "W": 1,
+      "D": 2,
+      "L": 1,
+      "GF": 7,
+      "GA": 6,
+      "GD": 1,
+      "Pts": 5,
+      "PPG": 1.25,
+      "rank": 7
+    },
+    {
+      "team": "Deportivo de A Coruña",
+      "GP": 4,
+      "W": 1,
+      "D": 2,
+      "L": 1,
+      "GF": 7,
+      "GA": 7,
+      "GD": 0,
+      "Pts": 5,
+      "PPG": 1.25,
+      "rank": 8
+    },
+    {
+      "team": "Villarreal",
+      "GP": 5,
+      "W": 1,
+      "D": 2,
+      "L": 2,
+      "GF": 7,
+      "GA": 7,
+      "GD": 0,
+      "Pts": 5,
+      "PPG": 1.0,
+      "rank": 9
+    },
+    {
+      "team": "Espanyol",
+      "GP": 4,
+      "W": 1,
+      "D": 1,
+      "L": 2,
+      "GF": 5,
+      "GA": 5,
+      "GD": 0,
+      "Pts": 4,
+      "PPG": 1.0,
+      "rank": 10
+    },
+    {
+      "team": "Athletic Club",
+      "GP": 3,
+      "W": 1,
+      "D": 1,
+      "L": 1,
+      "GF": 2,
+      "GA": 2,
+      "GD": 0,
+      "Pts": 4,
+      "PPG": 1.33,
+      "rank": 11
+    },
+    {
+      "team": "Celta de Vigo",
+      "GP": 4,
+      "W": 0,
+      "D": 4,
+      "L": 0,
+      "GF": 1,
+      "GA": 1,
+      "GD": 0,
+      "Pts": 4,
+      "PPG": 1.0,
+      "rank": 12
+    },
+    {
+      "team": "Valencia",
+      "GP": 4,
+      "W": 1,
+      "D": 1,
+      "L": 2,
+      "GF": 4,
+      "GA": 6,
+      "GD": -2,
+      "Pts": 4,
+      "PPG": 1.0,
+      "rank": 13
+    },
+    {
+      "team": "Osasuna",
+      "GP": 4,
+      "W": 1,
+      "D": 0,
+      "L": 3,
+      "GF": 6,
+      "GA": 15,
+      "GD": -9,
+      "Pts": 3,
+      "PPG": 0.75,
+      "rank": 14
+    },
+    {
+      "team": "Alavés",
+      "GP": 3,
+      "W": 0,
+      "D": 2,
+      "L": 1,
+      "GF": 2,
+      "GA": 3,
+      "GD": -1,
+      "Pts": 2,
+      "PPG": 0.67,
+      "rank": 15
+    },
+    {
+      "team": "Levante",
+      "GP": 4,
+      "W": 0,
+      "D": 2,
+      "L": 2,
+      "GF": 1,
+      "GA": 6,
+      "GD": -5,
+      "Pts": 2,
+      "PPG": 0.5,
+      "rank": 16
+    },
+    {
+      "team": "Rayo Vallecano",
+      "GP": 4,
+      "W": 0,
+      "D": 1,
+      "L": 3,
+      "GF": 5,
+      "GA": 12,
+      "GD": -7,
+      "Pts": 1,
+      "PPG": 0.25,
+      "rank": 17
+    },
+    {
+      "team": "Málaga",
+      "GP": 4,
+      "W": 0,
+      "D": 1,
+      "L": 3,
+      "GF": 1,
+      "GA": 8,
+      "GD": -7,
+      "Pts": 1,
+      "PPG": 0.25,
+      "rank": 18
+    },
+    {
+      "team": "Getafe",
+      "GP": 4,
+      "W": 0,
+      "D": 0,
+      "L": 4,
+      "GF": 0,
+      "GA": 8,
+      "GD": -8,
+      "Pts": 0,
+      "PPG": 0.0,
+      "rank": 19
+    },
+    {
+      "team": "R. Racing Club",
+      "GP": 4,
+      "W": 0,
+      "D": 0,
+      "L": 4,
+      "GF": 4,
+      "GA": 16,
+      "GD": -12,
+      "Pts": 0,
+      "PPG": 0.0,
+      "rank": 20
+    }
+  ],
+  "relative_home_away": [
+    {
+      "team": "Barcelona",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 24,
+      "PPG_home": 3.0,
+      "PPG_away": 3.0,
+      "PPG_diff": "0.00",
+      "raw_diff": 0.0,
+      "rank": 1
+    },
+    {
+      "team": "Atlético de Madrid",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 19,
+      "PPG_home": 2.5,
+      "PPG_away": 2.25,
+      "PPG_diff": "+0.25",
+      "raw_diff": 0.25,
+      "rank": 2
+    },
+    {
+      "team": "Real Betis",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 19,
+      "PPG_home": 3.0,
+      "PPG_away": 1.75,
+      "PPG_diff": "+1.25",
+      "raw_diff": 1.25,
+      "rank": 3
+    },
+    {
+      "team": "Real Madrid",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 18,
+      "PPG_home": 3.0,
+      "PPG_away": 1.5,
+      "PPG_diff": "+1.50",
+      "raw_diff": 1.5,
+      "rank": 4
+    },
+    {
+      "team": "Sevilla",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 14,
+      "PPG_home": 1.5,
+      "PPG_away": 2.0,
+      "PPG_diff": "-0.50",
+      "raw_diff": -0.5,
+      "rank": 5
+    },
+    {
+      "team": "Real Sociedad",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 13,
+      "PPG_home": 1.75,
+      "PPG_away": 1.5,
+      "PPG_diff": "+0.25",
+      "raw_diff": 0.25,
+      "rank": 6
+    },
+    {
+      "team": "Alavés",
+      "GPh": 5,
+      "GPa": 3,
+      "Pts": 11,
+      "PPG_home": 1.8,
+      "PPG_away": 0.67,
+      "PPG_diff": "+1.13",
+      "raw_diff": 1.13,
+      "rank": 7
+    },
+    {
+      "team": "Deportivo de A Coruña",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 10,
+      "PPG_home": 1.25,
+      "PPG_away": 1.25,
+      "PPG_diff": "0.00",
+      "raw_diff": 0.0,
+      "rank": 8
+    },
+    {
+      "team": "Athletic Club",
+      "GPh": 4,
+      "GPa": 3,
+      "Pts": 9,
+      "PPG_home": 1.25,
+      "PPG_away": 1.33,
+      "PPG_diff": "-0.08",
+      "raw_diff": -0.08,
+      "rank": 9
+    },
+    {
+      "team": "Rayo Vallecano",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 9,
+      "PPG_home": 2.0,
+      "PPG_away": 0.25,
+      "PPG_diff": "+1.75",
+      "raw_diff": 1.75,
+      "rank": 10
+    },
+    {
+      "team": "Celta de Vigo",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 8,
+      "PPG_home": 1.0,
+      "PPG_away": 1.0,
+      "PPG_diff": "0.00",
+      "raw_diff": 0.0,
+      "rank": 11
+    },
+    {
+      "team": "Espanyol",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 8,
+      "PPG_home": 1.0,
+      "PPG_away": 1.0,
+      "PPG_diff": "0.00",
+      "raw_diff": 0.0,
+      "rank": 12
+    },
+    {
+      "team": "Villarreal",
+      "GPh": 3,
+      "GPa": 5,
+      "Pts": 8,
+      "PPG_home": 1.0,
+      "PPG_away": 1.0,
+      "PPG_diff": "0.00",
+      "raw_diff": 0.0,
+      "rank": 13
+    },
+    {
+      "team": "Osasuna",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 8,
+      "PPG_home": 1.25,
+      "PPG_away": 0.75,
+      "PPG_diff": "+0.50",
+      "raw_diff": 0.5,
+      "rank": 14
+    },
+    {
+      "team": "Getafe",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 8,
+      "PPG_home": 2.0,
+      "PPG_away": 0.0,
+      "PPG_diff": "+2.00",
+      "raw_diff": 2.0,
+      "rank": 15
+    },
+    {
+      "team": "R. Racing Club",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 8,
+      "PPG_home": 2.0,
+      "PPG_away": 0.0,
+      "PPG_diff": "+2.00",
+      "raw_diff": 2.0,
+      "rank": 16
+    },
+    {
+      "team": "Levante",
+      "GPh": 3,
+      "GPa": 4,
+      "Pts": 6,
+      "PPG_home": 1.33,
+      "PPG_away": 0.5,
+      "PPG_diff": "+0.83",
+      "raw_diff": 0.83,
+      "rank": 17
+    },
+    {
+      "team": "Elche",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 6,
+      "PPG_home": 0.25,
+      "PPG_away": 1.25,
+      "PPG_diff": "-1.00",
+      "raw_diff": -1.0,
+      "rank": 18
+    },
+    {
+      "team": "Valencia",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 5,
+      "PPG_home": 0.25,
+      "PPG_away": 1.0,
+      "PPG_diff": "-0.75",
+      "raw_diff": -0.75,
+      "rank": 19
+    },
+    {
+      "team": "Málaga",
+      "GPh": 4,
+      "GPa": 4,
+      "Pts": 4,
+      "PPG_home": 0.75,
+      "PPG_away": 0.25,
+      "PPG_diff": "+0.50",
+      "raw_diff": 0.5,
+      "rank": 20
+    }
+  ],
+  "relative_form": [
+    {
+      "team": "Barcelona",
+      "GP": 8,
+      "Pts": 24,
+      "PPG_last_8": 3.0,
+      "PPG_all": 3.0,
+      "relative_form": "0%",
+      "rank": 1
+    },
+    {
+      "team": "Atlético de Madrid",
+      "GP": 8,
+      "Pts": 19,
+      "PPG_last_8": 2.38,
+      "PPG_all": 2.38,
+      "relative_form": "0%",
+      "rank": 2
+    },
+    {
+      "team": "Real Betis",
+      "GP": 8,
+      "Pts": 19,
+      "PPG_last_8": 2.38,
+      "PPG_all": 2.38,
+      "relative_form": "0%",
+      "rank": 3
+    },
+    {
+      "team": "Real Madrid",
+      "GP": 8,
+      "Pts": 18,
+      "PPG_last_8": 2.25,
+      "PPG_all": 2.25,
+      "relative_form": "0%",
+      "rank": 4
+    },
+    {
+      "team": "Sevilla",
+      "GP": 8,
+      "Pts": 14,
+      "PPG_last_8": 1.75,
+      "PPG_all": 1.75,
+      "relative_form": "0%",
+      "rank": 5
+    },
+    {
+      "team": "Real Sociedad",
+      "GP": 8,
+      "Pts": 13,
+      "PPG_last_8": 1.62,
+      "PPG_all": 1.62,
+      "relative_form": "0%",
+      "rank": 6
+    },
+    {
+      "team": "Alavés",
+      "GP": 8,
+      "Pts": 11,
+      "PPG_last_8": 1.38,
+      "PPG_all": 1.38,
+      "relative_form": "0%",
+      "rank": 7
+    },
+    {
+      "team": "Deportivo de A Coruña",
+      "GP": 8,
+      "Pts": 10,
+      "PPG_last_8": 1.25,
+      "PPG_all": 1.25,
+      "relative_form": "0%",
+      "rank": 8
+    },
+    {
+      "team": "Athletic Club",
+      "GP": 7,
+      "Pts": 9,
+      "PPG_last_8": 1.29,
+      "PPG_all": 1.29,
+      "relative_form": "0%",
+      "rank": 9
+    },
+    {
+      "team": "Rayo Vallecano",
+      "GP": 8,
+      "Pts": 9,
+      "PPG_last_8": 1.12,
+      "PPG_all": 1.12,
+      "relative_form": "0%",
+      "rank": 10
+    },
+    {
+      "team": "Celta de Vigo",
+      "GP": 8,
+      "Pts": 8,
+      "PPG_last_8": 1.0,
+      "PPG_all": 1.0,
+      "relative_form": "0%",
+      "rank": 11
+    },
+    {
+      "team": "Espanyol",
+      "GP": 8,
+      "Pts": 8,
+      "PPG_last_8": 1.0,
+      "PPG_all": 1.0,
+      "relative_form": "0%",
+      "rank": 12
+    },
+    {
+      "team": "Getafe",
+      "GP": 8,
+      "Pts": 8,
+      "PPG_last_8": 1.0,
+      "PPG_all": 1.0,
+      "relative_form": "0%",
+      "rank": 13
+    },
+    {
+      "team": "Osasuna",
+      "GP": 8,
+      "Pts": 8,
+      "PPG_last_8": 1.0,
+      "PPG_all": 1.0,
+      "relative_form": "0%",
+      "rank": 14
+    },
+    {
+      "team": "R. Racing Club",
+      "GP": 8,
+      "Pts": 8,
+      "PPG_last_8": 1.0,
+      "PPG_all": 1.0,
+      "relative_form": "0%",
+      "rank": 15
+    },
+    {
+      "team": "Villarreal",
+      "GP": 8,
+      "Pts": 8,
+      "PPG_last_8": 1.0,
+      "PPG_all": 1.0,
+      "relative_form": "0%",
+      "rank": 16
+    },
+    {
+      "team": "Levante",
+      "GP": 7,
+      "Pts": 6,
+      "PPG_last_8": 0.86,
+      "PPG_all": 0.86,
+      "relative_form": "0%",
+      "rank": 17
+    },
+    {
+      "team": "Elche",
+      "GP": 8,
+      "Pts": 6,
+      "PPG_last_8": 0.75,
+      "PPG_all": 0.75,
+      "relative_form": "0%",
+      "rank": 18
+    },
+    {
+      "team": "Valencia",
+      "GP": 8,
+      "Pts": 5,
+      "PPG_last_8": 0.62,
+      "PPG_all": 0.62,
+      "relative_form": "0%",
+      "rank": 19
+    },
+    {
+      "team": "Málaga",
+      "GP": 8,
+      "Pts": 4,
+      "PPG_last_8": 0.5,
+      "PPG_all": 0.5,
+      "relative_form": "0%",
+      "rank": 20
+    }
+  ],
+  "points_performance_index": [
+    {
+      "team": "Barcelona",
+      "GP": 8,
+      "Pts": 24,
+      "Team_PPG": 3.0,
+      "Opponents_PPG": 0.61,
+      "PPI": 1.83,
+      "rank": 1
+    },
+    {
+      "team": "Atlético de Madrid",
+      "GP": 8,
+      "Pts": 19,
+      "Team_PPG": 2.38,
+      "Opponents_PPG": 1.23,
+      "PPI": 2.93,
+      "rank": 2
+    },
+    {
+      "team": "Real Betis",
+      "GP": 8,
+      "Pts": 19,
+      "Team_PPG": 2.38,
+      "Opponents_PPG": 0.95,
+      "PPI": 2.26,
+      "rank": 3
+    },
+    {
+      "team": "Real Madrid",
+      "GP": 8,
+      "Pts": 18,
+      "Team_PPG": 2.25,
+      "Opponents_PPG": 1.22,
+      "PPI": 2.75,
+      "rank": 4
+    },
+    {
+      "team": "Sevilla",
+      "GP": 8,
+      "Pts": 14,
+      "Team_PPG": 1.75,
+      "Opponents_PPG": 1.42,
+      "PPI": 2.48,
+      "rank": 5
+    },
+    {
+      "team": "Real Sociedad",
+      "GP": 8,
+      "Pts": 13,
+      "Team_PPG": 1.62,
+      "Opponents_PPG": 1.5,
+      "PPI": 2.43,
+      "rank": 6
+    },
+    {
+      "team": "Alavés",
+      "GP": 8,
+      "Pts": 11,
+      "Team_PPG": 1.38,
+      "Opponents_PPG": 1.28,
+      "PPI": 1.77,
+      "rank": 7
+    },
+    {
+      "team": "Deportivo de A Coruña",
+      "GP": 8,
+      "Pts": 10,
+      "Team_PPG": 1.25,
+      "Opponents_PPG": 1.44,
+      "PPI": 1.8,
+      "rank": 8
+    },
+    {
+      "team": "Athletic Club",
+      "GP": 7,
+      "Pts": 9,
+      "Team_PPG": 1.29,
+      "Opponents_PPG": 1.74,
+      "PPI": 2.24,
+      "rank": 9
+    },
+    {
+      "team": "Rayo Vallecano",
+      "GP": 8,
+      "Pts": 9,
+      "Team_PPG": 1.12,
+      "Opponents_PPG": 1.47,
+      "PPI": 1.65,
+      "rank": 10
+    },
+    {
+      "team": "Villarreal",
+      "GP": 8,
+      "Pts": 8,
+      "Team_PPG": 1.0,
+      "Opponents_PPG": 1.69,
+      "PPI": 1.69,
+      "rank": 11
+    },
+    {
+      "team": "R. Racing Club",
+      "GP": 8,
+      "Pts": 8,
+      "Team_PPG": 1.0,
+      "Opponents_PPG": 1.49,
+      "PPI": 1.49,
+      "rank": 12
+    },
+    {
+      "team": "Getafe",
+      "GP": 8,
+      "Pts": 8,
+      "Team_PPG": 1.0,
+      "Opponents_PPG": 1.44,
+      "PPI": 1.44,
+      "rank": 13
+    },
+    {
+      "team": "Espanyol",
+      "GP": 8,
+      "Pts": 8,
+      "Team_PPG": 1.0,
+      "Opponents_PPG": 1.38,
+      "PPI": 1.38,
+      "rank": 14
+    },
+    {
+      "team": "Osasuna",
+      "GP": 8,
+      "Pts": 8,
+      "Team_PPG": 1.0,
+      "Opponents_PPG": 1.26,
+      "PPI": 1.26,
+      "rank": 15
+    },
+    {
+      "team": "Celta de Vigo",
+      "GP": 8,
+      "Pts": 8,
+      "Team_PPG": 1.0,
+      "Opponents_PPG": 0.82,
+      "PPI": 0.82,
+      "rank": 16
+    },
+    {
+      "team": "Levante",
+      "GP": 7,
+      "Pts": 6,
+      "Team_PPG": 0.86,
+      "Opponents_PPG": 1.54,
+      "PPI": 1.32,
+      "rank": 17
+    },
+    {
+      "team": "Elche",
+      "GP": 8,
+      "Pts": 6,
+      "Team_PPG": 0.75,
+      "Opponents_PPG": 1.56,
+      "PPI": 1.17,
+      "rank": 18
+    },
+    {
+      "team": "Valencia",
+      "GP": 8,
+      "Pts": 5,
+      "Team_PPG": 0.62,
+      "Opponents_PPG": 1.73,
+      "PPI": 1.07,
+      "rank": 19
+    },
+    {
+      "team": "Málaga",
+      "GP": 8,
+      "Pts": 4,
+      "Team_PPG": 0.5,
+      "Opponents_PPG": 1.53,
+      "PPI": 0.77,
+      "rank": 20
+    }
+  ],
+  "performance_ratings": [
+    {
+      "team": "Barcelona",
+      "GP": 8,
+      "W": 8,
+      "D": 0,
+      "L": 0,
+      "Pts": 24,
+      "pPts": 8.0,
+      "Team_pPPG": "100%",
+      "Opponents_pPPG": "23%",
+      "PR": "74.5%",
+      "raw_pr": 74.5,
+      "rank": 1
+    },
+    {
+      "team": "Atlético de Madrid",
+      "GP": 8,
+      "W": 6,
+      "D": 1,
+      "L": 1,
+      "Pts": 19,
+      "pPts": 6.5,
+      "Team_pPPG": "81%",
+      "Opponents_pPPG": "44%",
+      "PR": "68.7%",
+      "raw_pr": 68.7,
+      "rank": 2
+    },
+    {
+      "team": "Real Betis",
+      "GP": 8,
+      "W": 6,
+      "D": 1,
+      "L": 1,
+      "Pts": 19,
+      "pPts": 6.5,
+      "Team_pPPG": "81%",
+      "Opponents_pPPG": "34%",
+      "PR": "65.4%",
+      "raw_pr": 65.4,
+      "rank": 3
+    },
+    {
+      "team": "Real Madrid",
+      "GP": 8,
+      "W": 6,
+      "D": 0,
+      "L": 2,
+      "Pts": 18,
+      "pPts": 6.0,
+      "Team_pPPG": "75%",
+      "Opponents_pPPG": "44%",
+      "PR": "64.7%",
+      "raw_pr": 64.7,
+      "rank": 4
+    },
+    {
+      "team": "Sevilla",
+      "GP": 8,
+      "W": 4,
+      "D": 2,
+      "L": 2,
+      "Pts": 14,
+      "pPts": 5.0,
+      "Team_pPPG": "62%",
+      "Opponents_pPPG": "52%",
+      "PR": "58.9%",
+      "raw_pr": 58.9,
+      "rank": 5
+    },
+    {
+      "team": "Real Sociedad",
+      "GP": 8,
+      "W": 4,
+      "D": 1,
+      "L": 3,
+      "Pts": 13,
+      "pPts": 4.5,
+      "Team_pPPG": "56%",
+      "Opponents_pPPG": "55%",
+      "PR": "55.7%",
+      "raw_pr": 55.7,
+      "rank": 6
+    },
+    {
+      "team": "Alavés",
+      "GP": 8,
+      "W": 3,
+      "D": 2,
+      "L": 3,
+      "Pts": 11,
+      "pPts": 4.0,
+      "Team_pPPG": "50%",
+      "Opponents_pPPG": "47%",
+      "PR": "49.1%",
+      "raw_pr": 49.1,
+      "rank": 7
+    },
+    {
+      "team": "Deportivo de A Coruña",
+      "GP": 8,
+      "W": 2,
+      "D": 4,
+      "L": 2,
+      "Pts": 10,
+      "pPts": 4.0,
+      "Team_pPPG": "50%",
+      "Opponents_pPPG": "54%",
+      "PR": "51.4%",
+      "raw_pr": 51.4,
+      "rank": 8
+    },
+    {
+      "team": "Athletic Club",
+      "GP": 7,
+      "W": 2,
+      "D": 3,
+      "L": 2,
+      "Pts": 9,
+      "pPts": 3.5,
+      "Team_pPPG": "50%",
+      "Opponents_pPPG": "64%",
+      "PR": "54.6%",
+      "raw_pr": 54.6,
+      "rank": 9
+    },
+    {
+      "team": "Rayo Vallecano",
+      "GP": 8,
+      "W": 2,
+      "D": 3,
+      "L": 3,
+      "Pts": 9,
+      "pPts": 3.5,
+      "Team_pPPG": "44%",
+      "Opponents_pPPG": "53%",
+      "PR": "46.7%",
+      "raw_pr": 46.7,
+      "rank": 10
+    },
+    {
+      "team": "Villarreal",
+      "GP": 8,
+      "W": 2,
+      "D": 2,
+      "L": 4,
+      "Pts": 8,
+      "pPts": 3.0,
+      "Team_pPPG": "38%",
+      "Opponents_pPPG": "62%",
+      "PR": "45.7%",
+      "raw_pr": 45.7,
+      "rank": 11
+    },
+    {
+      "team": "R. Racing Club",
+      "GP": 8,
+      "W": 2,
+      "D": 2,
+      "L": 4,
+      "Pts": 8,
+      "pPts": 3.0,
+      "Team_pPPG": "38%",
+      "Opponents_pPPG": "56%",
+      "PR": "43.7%",
+      "raw_pr": 43.7,
+      "rank": 12
+    },
+    {
+      "team": "Espanyol",
+      "GP": 8,
+      "W": 2,
+      "D": 2,
+      "L": 4,
+      "Pts": 8,
+      "pPts": 3.0,
+      "Team_pPPG": "38%",
+      "Opponents_pPPG": "53%",
+      "PR": "42.7%",
+      "raw_pr": 42.7,
+      "rank": 13
+    },
+    {
+      "team": "Getafe",
+      "GP": 8,
+      "W": 2,
+      "D": 2,
+      "L": 4,
+      "Pts": 8,
+      "pPts": 3.0,
+      "Team_pPPG": "38%",
+      "Opponents_pPPG": "53%",
+      "PR": "42.6%",
+      "raw_pr": 42.6,
+      "rank": 14
+    },
+    {
+      "team": "Osasuna",
+      "GP": 8,
+      "W": 2,
+      "D": 2,
+      "L": 4,
+      "Pts": 8,
+      "pPts": 3.0,
+      "Team_pPPG": "38%",
+      "Opponents_pPPG": "45%",
+      "PR": "40.0%",
+      "raw_pr": 40.0,
+      "rank": 15
+    },
+    {
+      "team": "Celta de Vigo",
+      "GP": 8,
+      "W": 1,
+      "D": 5,
+      "L": 2,
+      "Pts": 8,
+      "pPts": 3.5,
+      "Team_pPPG": "44%",
+      "Opponents_pPPG": "31%",
+      "PR": "39.6%",
+      "raw_pr": 39.6,
+      "rank": 16
+    },
+    {
+      "team": "Levante",
+      "GP": 7,
+      "W": 1,
+      "D": 3,
+      "L": 3,
+      "Pts": 6,
+      "pPts": 2.5,
+      "Team_pPPG": "36%",
+      "Opponents_pPPG": "56%",
+      "PR": "42.6%",
+      "raw_pr": 42.6,
+      "rank": 17
+    },
+    {
+      "team": "Elche",
+      "GP": 8,
+      "W": 1,
+      "D": 3,
+      "L": 4,
+      "Pts": 6,
+      "pPts": 2.5,
+      "Team_pPPG": "31%",
+      "Opponents_pPPG": "58%",
+      "PR": "40.1%",
+      "raw_pr": 40.1,
+      "rank": 18
+    },
+    {
+      "team": "Valencia",
+      "GP": 8,
+      "W": 1,
+      "D": 2,
+      "L": 5,
+      "Pts": 5,
+      "pPts": 2.0,
+      "Team_pPPG": "25%",
+      "Opponents_pPPG": "62%",
+      "PR": "37.4%",
+      "raw_pr": 37.4,
+      "rank": 19
+    },
+    {
+      "team": "Málaga",
+      "GP": 8,
+      "W": 0,
+      "D": 4,
+      "L": 4,
+      "Pts": 4,
+      "pPts": 2.0,
+      "Team_pPPG": "25%",
+      "Opponents_pPPG": "57%",
+      "PR": "35.5%",
+      "raw_pr": 35.5,
+      "rank": 20
+    }
+  ],
+  "run_in_analysis": [
+    {
+      "team": "Barcelona",
+      "GP": 8,
+      "Pts": 24,
+      "PPG": 3.0,
+      "Opponents_played_PPG": 0.61,
+      "Opponents_remaining_PPG": 1.44,
+      "Played_vs_Remaining": "-136%",
+      "Next_4_opponents": 1.92,
+      "rank": 1
+    },
+    {
+      "team": "Atlético de Madrid",
+      "GP": 8,
+      "Pts": 19,
+      "PPG": 2.38,
+      "Opponents_played_PPG": 1.23,
+      "Opponents_remaining_PPG": 1.32,
+      "Played_vs_Remaining": "-7%",
+      "Next_4_opponents": 1.65,
+      "rank": 2
+    },
+    {
+      "team": "Real Betis",
+      "GP": 8,
+      "Pts": 19,
+      "PPG": 2.38,
+      "Opponents_played_PPG": 0.95,
+      "Opponents_remaining_PPG": 1.39,
+      "Played_vs_Remaining": "-46%",
+      "Next_4_opponents": 1.12,
+      "rank": 3
+    },
+    {
+      "team": "Real Madrid",
+      "GP": 8,
+      "Pts": 18,
+      "PPG": 2.25,
+      "Opponents_played_PPG": 1.22,
+      "Opponents_remaining_PPG": 1.33,
+      "Played_vs_Remaining": "-9%",
+      "Next_4_opponents": 1.81,
+      "rank": 4
+    },
+    {
+      "team": "Sevilla",
+      "GP": 8,
+      "Pts": 14,
+      "PPG": 1.75,
+      "Opponents_played_PPG": 1.42,
+      "Opponents_remaining_PPG": 1.31,
+      "Played_vs_Remaining": "+8%",
+      "Next_4_opponents": 1.6,
+      "rank": 5
+    },
+    {
+      "team": "Real Sociedad",
+      "GP": 8,
+      "Pts": 13,
+      "PPG": 1.62,
+      "Opponents_played_PPG": 1.5,
+      "Opponents_remaining_PPG": 1.3,
+      "Played_vs_Remaining": "+13%",
+      "Next_4_opponents": 0.69,
+      "rank": 6
+    },
+    {
+      "team": "Alavés",
+      "GP": 8,
+      "Pts": 11,
+      "PPG": 1.38,
+      "Opponents_played_PPG": 1.28,
+      "Opponents_remaining_PPG": 1.38,
+      "Played_vs_Remaining": "-8%",
+      "Next_4_opponents": 1.44,
+      "rank": 7
+    },
+    {
+      "team": "Deportivo de A Coruña",
+      "GP": 8,
+      "Pts": 10,
+      "PPG": 1.25,
+      "Opponents_played_PPG": 1.44,
+      "Opponents_remaining_PPG": 1.34,
+      "Played_vs_Remaining": "+7%",
+      "Next_4_opponents": 1.19,
+      "rank": 8
+    },
+    {
+      "team": "Athletic Club",
+      "GP": 7,
+      "Pts": 9,
+      "PPG": 1.29,
+      "Opponents_played_PPG": 1.74,
+      "Opponents_remaining_PPG": 1.27,
+      "Played_vs_Remaining": "+27%",
+      "Next_4_opponents": 0.77,
+      "rank": 9
+    },
+    {
+      "team": "Rayo Vallecano",
+      "GP": 8,
+      "Pts": 9,
+      "PPG": 1.12,
+      "Opponents_played_PPG": 1.47,
+      "Opponents_remaining_PPG": 1.34,
+      "Played_vs_Remaining": "+9%",
+      "Next_4_opponents": 1.5,
+      "rank": 10
+    },
+    {
+      "team": "Celta de Vigo",
+      "GP": 8,
+      "Pts": 8,
+      "PPG": 1.0,
+      "Opponents_played_PPG": 0.82,
+      "Opponents_remaining_PPG": 1.52,
+      "Played_vs_Remaining": "-85%",
+      "Next_4_opponents": 1.23,
+      "rank": 11
+    },
+    {
+      "team": "Espanyol",
+      "GP": 8,
+      "Pts": 8,
+      "PPG": 1.0,
+      "Opponents_played_PPG": 1.38,
+      "Opponents_remaining_PPG": 1.37,
+      "Played_vs_Remaining": "+1%",
+      "Next_4_opponents": 1.62,
+      "rank": 12
+    },
+    {
+      "team": "Getafe",
+      "GP": 8,
+      "Pts": 8,
+      "PPG": 1.0,
+      "Opponents_played_PPG": 1.44,
+      "Opponents_remaining_PPG": 1.35,
+      "Played_vs_Remaining": "+6%",
+      "Next_4_opponents": 1.12,
+      "rank": 13
+    },
+    {
+      "team": "Osasuna",
+      "GP": 8,
+      "Pts": 8,
+      "PPG": 1.0,
+      "Opponents_played_PPG": 1.26,
+      "Opponents_remaining_PPG": 1.4,
+      "Played_vs_Remaining": "-11%",
+      "Next_4_opponents": 1.02,
+      "rank": 14
+    },
+    {
+      "team": "R. Racing Club",
+      "GP": 8,
+      "Pts": 8,
+      "PPG": 1.0,
+      "Opponents_played_PPG": 1.49,
+      "Opponents_remaining_PPG": 1.34,
+      "Played_vs_Remaining": "+10%",
+      "Next_4_opponents": 1.12,
+      "rank": 15
+    },
+    {
+      "team": "Villarreal",
+      "GP": 8,
+      "Pts": 8,
+      "PPG": 1.0,
+      "Opponents_played_PPG": 1.69,
+      "Opponents_remaining_PPG": 1.29,
+      "Played_vs_Remaining": "+24%",
+      "Next_4_opponents": 0.62,
+      "rank": 16
+    },
+    {
+      "team": "Levante",
+      "GP": 7,
+      "Pts": 6,
+      "PPG": 0.86,
+      "Opponents_played_PPG": 1.54,
+      "Opponents_remaining_PPG": 1.34,
+      "Played_vs_Remaining": "+13%",
+      "Next_4_opponents": 1.65,
+      "rank": 17
+    },
+    {
+      "team": "Elche",
+      "GP": 8,
+      "Pts": 6,
+      "PPG": 0.75,
+      "Opponents_played_PPG": 1.56,
+      "Opponents_remaining_PPG": 1.34,
+      "Played_vs_Remaining": "+14%",
+      "Next_4_opponents": 1.44,
+      "rank": 18
+    },
+    {
+      "team": "Valencia",
+      "GP": 8,
+      "Pts": 5,
+      "PPG": 0.62,
+      "Opponents_played_PPG": 1.73,
+      "Opponents_remaining_PPG": 1.3,
+      "Played_vs_Remaining": "+25%",
+      "Next_4_opponents": 1.02,
+      "rank": 19
+    },
+    {
+      "team": "Málaga",
+      "GP": 8,
+      "Pts": 4,
+      "PPG": 0.5,
+      "Opponents_played_PPG": 1.53,
+      "Opponents_remaining_PPG": 1.36,
+      "Played_vs_Remaining": "+11%",
+      "Next_4_opponents": 1.57,
+      "rank": 20
+    }
+  ],
+  "segments_table": {
+    "5th Segment": {
+      "range": "hasta 4.8 pts",
+      "min": 0.0,
+      "max": 4.8,
+      "teams": [
+        "(8) 4 Málaga"
+      ]
+    },
+    "4th Segment": {
+      "range": "4.9 a 9.6 pts",
+      "min": 4.8,
+      "max": 9.6,
+      "teams": [
+        "(7) 9 Athletic Club",
+        "(8) 9 Rayo Vallecano",
+        "(8) 8 Celta de Vigo",
+        "(8) 8 Villarreal",
+        "(8) 8 Espanyol",
+        "(8) 8 Getafe",
+        "(8) 8 R. Racing Club",
+        "(8) 8 Osasuna",
+        "(7) 6 Levante",
+        "(8) 6 Elche",
+        "(8) 5 Valencia"
+      ]
+    },
+    "3rd Segment": {
+      "range": "9.7 a 14.4 pts",
+      "min": 9.6,
+      "max": 14.399999999999999,
+      "teams": [
+        "(8) 14 Sevilla",
+        "(8) 13 Real Sociedad",
+        "(8) 11 Alavés",
+        "(8) 10 Deportivo de A Coruña"
+      ]
+    },
+    "2nd Segment": {
+      "range": "14.5 a 19.2 pts",
+      "min": 14.399999999999999,
+      "max": 19.2,
+      "teams": [
+        "(8) 19 Atlético de Madrid",
+        "(8) 19 Real Betis",
+        "(8) 18 Real Madrid"
+      ]
+    },
+    "1st Segment": {
+      "range": "19.3 a 24 pts",
+      "min": 19.2,
+      "max": 25.0,
+      "teams": [
+        "(8) 24 Barcelona"
+      ]
+    }
+  },
+  "tables_overview": {
+    "offence_overall": [
+      {
+        "team": "Barcelona",
+        "GP": 8,
+        "GF": 34
+      },
+      {
+        "team": "Real Madrid",
+        "GP": 8,
+        "GF": 19
+      },
+      {
+        "team": "Atlético de Madrid",
+        "GP": 8,
+        "GF": 18
+      },
+      {
+        "team": "Real Betis",
+        "GP": 8,
+        "GF": 14
+      },
+      {
+        "team": "R. Racing Club",
+        "GP": 8,
+        "GF": 13
+      },
+      {
+        "team": "Sevilla",
+        "GP": 8,
+        "GF": 13
+      },
+      {
+        "team": "Villarreal",
+        "GP": 8,
+        "GF": 13
+      },
+      {
+        "team": "Alavés",
+        "GP": 8,
+        "GF": 12
+      },
+      {
+        "team": "Deportivo de A Coruña",
+        "GP": 8,
+        "GF": 12
+      },
+      {
+        "team": "Real Sociedad",
+        "GP": 8,
+        "GF": 12
+      },
+      {
+        "team": "Elche",
+        "GP": 8,
+        "GF": 11
+      },
+      {
+        "team": "Espanyol",
+        "GP": 8,
+        "GF": 11
+      },
+      {
+        "team": "Levante",
+        "GP": 7,
+        "GF": 11
+      },
+      {
+        "team": "Rayo Vallecano",
+        "GP": 8,
+        "GF": 11
+      },
+      {
+        "team": "Celta de Vigo",
+        "GP": 8,
+        "GF": 8
+      },
+      {
+        "team": "Osasuna",
+        "GP": 8,
+        "GF": 8
+      },
+      {
+        "team": "Athletic Club",
+        "GP": 7,
+        "GF": 7
+      },
+      {
+        "team": "Valencia",
+        "GP": 8,
+        "GF": 6
+      },
+      {
+        "team": "Getafe",
+        "GP": 8,
+        "GF": 4
+      },
+      {
+        "team": "Málaga",
+        "GP": 8,
+        "GF": 4
+      }
+    ],
+    "defence_overall": [
+      {
+        "team": "Athletic Club",
+        "GP": 7,
+        "GA": 6
+      },
+      {
+        "team": "Celta de Vigo",
+        "GP": 8,
+        "GA": 6
+      },
+      {
+        "team": "Barcelona",
+        "GP": 8,
+        "GA": 7
+      },
+      {
+        "team": "Alavés",
+        "GP": 8,
+        "GA": 8
+      },
+      {
+        "team": "Atlético de Madrid",
+        "GP": 8,
+        "GA": 8
+      },
+      {
+        "team": "Real Madrid",
+        "GP": 8,
+        "GA": 8
+      },
+      {
+        "team": "Real Betis",
+        "GP": 8,
+        "GA": 9
+      },
+      {
+        "team": "Getafe",
+        "GP": 8,
+        "GA": 10
+      },
+      {
+        "team": "Deportivo de A Coruña",
+        "GP": 8,
+        "GA": 11
+      },
+      {
+        "team": "Espanyol",
+        "GP": 8,
+        "GA": 11
+      },
+      {
+        "team": "Sevilla",
+        "GP": 8,
+        "GA": 12
+      },
+      {
+        "team": "Málaga",
+        "GP": 8,
+        "GA": 13
+      },
+      {
+        "team": "Villarreal",
+        "GP": 8,
+        "GA": 13
+      },
+      {
+        "team": "Levante",
+        "GP": 7,
+        "GA": 15
+      },
+      {
+        "team": "Real Sociedad",
+        "GP": 8,
+        "GA": 15
+      },
+      {
+        "team": "Valencia",
+        "GP": 8,
+        "GA": 15
+      },
+      {
+        "team": "Rayo Vallecano",
+        "GP": 8,
+        "GA": 16
+      },
+      {
+        "team": "Elche",
+        "GP": 8,
+        "GA": 17
+      },
+      {
+        "team": "Osasuna",
+        "GP": 8,
+        "GA": 18
+      },
+      {
+        "team": "R. Racing Club",
+        "GP": 8,
+        "GA": 23
+      }
+    ],
+    "offence_home": [
+      {
+        "team": "Barcelona",
+        "GP": 4,
+        "GF": 17
+      },
+      {
+        "team": "Real Madrid",
+        "GP": 4,
+        "GF": 13
+      },
+      {
+        "team": "Alavés",
+        "GP": 5,
+        "GF": 10
+      },
+      {
+        "team": "Atlético de Madrid",
+        "GP": 4,
+        "GF": 10
+      },
+      {
+        "team": "Levante",
+        "GP": 3,
+        "GF": 10
+      },
+      {
+        "team": "R. Racing Club",
+        "GP": 4,
+        "GF": 9
+      },
+      {
+        "team": "Real Betis",
+        "GP": 4,
+        "GF": 8
+      },
+      {
+        "team": "Celta de Vigo",
+        "GP": 4,
+        "GF": 7
+      },
+      {
+        "team": "Espanyol",
+        "GP": 4,
+        "GF": 6
+      },
+      {
+        "team": "Rayo Vallecano",
+        "GP": 4,
+        "GF": 6
+      },
+      {
+        "team": "Villarreal",
+        "GP": 3,
+        "GF": 6
+      },
+      {
+        "team": "Athletic Club",
+        "GP": 4,
+        "GF": 5
+      },
+      {
+        "team": "Deportivo de A Coruña",
+        "GP": 4,
+        "GF": 5
+      },
+      {
+        "team": "Real Sociedad",
+        "GP": 4,
+        "GF": 5
+      },
+      {
+        "team": "Sevilla",
+        "GP": 4,
+        "GF": 5
+      },
+      {
+        "team": "Elche",
+        "GP": 4,
+        "GF": 4
+      },
+      {
+        "team": "Getafe",
+        "GP": 4,
+        "GF": 4
+      },
+      {
+        "team": "Málaga",
+        "GP": 4,
+        "GF": 3
+      },
+      {
+        "team": "Osasuna",
+        "GP": 4,
+        "GF": 2
+      },
+      {
+        "team": "Valencia",
+        "GP": 4,
+        "GF": 2
+      }
+    ],
+    "defence_home": [
+      {
+        "team": "Getafe",
+        "GP": 4,
+        "GA": 2
+      },
+      {
+        "team": "Real Betis",
+        "GP": 4,
+        "GA": 2
+      },
+      {
+        "team": "Real Madrid",
+        "GP": 4,
+        "GA": 2
+      },
+      {
+        "team": "Atlético de Madrid",
+        "GP": 4,
+        "GA": 3
+      },
+      {
+        "team": "Osasuna",
+        "GP": 4,
+        "GA": 3
+      },
+      {
+        "team": "Athletic Club",
+        "GP": 4,
+        "GA": 4
+      },
+      {
+        "team": "Barcelona",
+        "GP": 4,
+        "GA": 4
+      },
+      {
+        "team": "Deportivo de A Coruña",
+        "GP": 4,
+        "GA": 4
+      },
+      {
+        "team": "Rayo Vallecano",
+        "GP": 4,
+        "GA": 4
+      },
+      {
+        "team": "Alavés",
+        "GP": 5,
+        "GA": 5
+      },
+      {
+        "team": "Celta de Vigo",
+        "GP": 4,
+        "GA": 5
+      },
+      {
+        "team": "Málaga",
+        "GP": 4,
+        "GA": 5
+      },
+      {
+        "team": "Espanyol",
+        "GP": 4,
+        "GA": 6
+      },
+      {
+        "team": "Real Sociedad",
+        "GP": 4,
+        "GA": 6
+      },
+      {
+        "team": "Villarreal",
+        "GP": 3,
+        "GA": 6
+      },
+      {
+        "team": "R. Racing Club",
+        "GP": 4,
+        "GA": 7
+      },
+      {
+        "team": "Sevilla",
+        "GP": 4,
+        "GA": 7
+      },
+      {
+        "team": "Levante",
+        "GP": 3,
+        "GA": 9
+      },
+      {
+        "team": "Valencia",
+        "GP": 4,
+        "GA": 9
+      },
+      {
+        "team": "Elche",
+        "GP": 4,
+        "GA": 11
+      }
+    ],
+    "offence_away": [
+      {
+        "team": "Barcelona",
+        "GP": 4,
+        "GF": 17
+      },
+      {
+        "team": "Atlético de Madrid",
+        "GP": 4,
+        "GF": 8
+      },
+      {
+        "team": "Sevilla",
+        "GP": 4,
+        "GF": 8
+      },
+      {
+        "team": "Deportivo de A Coruña",
+        "GP": 4,
+        "GF": 7
+      },
+      {
+        "team": "Elche",
+        "GP": 4,
+        "GF": 7
+      },
+      {
+        "team": "Real Sociedad",
+        "GP": 4,
+        "GF": 7
+      },
+      {
+        "team": "Villarreal",
+        "GP": 5,
+        "GF": 7
+      },
+      {
+        "team": "Osasuna",
+        "GP": 4,
+        "GF": 6
+      },
+      {
+        "team": "Real Betis",
+        "GP": 4,
+        "GF": 6
+      },
+      {
+        "team": "Real Madrid",
+        "GP": 4,
+        "GF": 6
+      },
+      {
+        "team": "Espanyol",
+        "GP": 4,
+        "GF": 5
+      },
+      {
+        "team": "Rayo Vallecano",
+        "GP": 4,
+        "GF": 5
+      },
+      {
+        "team": "R. Racing Club",
+        "GP": 4,
+        "GF": 4
+      },
+      {
+        "team": "Valencia",
+        "GP": 4,
+        "GF": 4
+      },
+      {
+        "team": "Alavés",
+        "GP": 3,
+        "GF": 2
+      },
+      {
+        "team": "Athletic Club",
+        "GP": 3,
+        "GF": 2
+      },
+      {
+        "team": "Celta de Vigo",
+        "GP": 4,
+        "GF": 1
+      },
+      {
+        "team": "Levante",
+        "GP": 4,
+        "GF": 1
+      },
+      {
+        "team": "Málaga",
+        "GP": 4,
+        "GF": 1
+      },
+      {
+        "team": "Getafe",
+        "GP": 4,
+        "GF": 0
+      }
+    ],
+    "defence_away": [
+      {
+        "team": "Celta de Vigo",
+        "GP": 4,
+        "GA": 1
+      },
+      {
+        "team": "Athletic Club",
+        "GP": 3,
+        "GA": 2
+      },
+      {
+        "team": "Alavés",
+        "GP": 3,
+        "GA": 3
+      },
+      {
+        "team": "Barcelona",
+        "GP": 4,
+        "GA": 3
+      },
+      {
+        "team": "Atlético de Madrid",
+        "GP": 4,
+        "GA": 5
+      },
+      {
+        "team": "Espanyol",
+        "GP": 4,
+        "GA": 5
+      },
+      {
+        "team": "Sevilla",
+        "GP": 4,
+        "GA": 5
+      },
+      {
+        "team": "Elche",
+        "GP": 4,
+        "GA": 6
+      },
+      {
+        "team": "Levante",
+        "GP": 4,
+        "GA": 6
+      },
+      {
+        "team": "Real Madrid",
+        "GP": 4,
+        "GA": 6
+      },
+      {
+        "team": "Valencia",
+        "GP": 4,
+        "GA": 6
+      },
+      {
+        "team": "Deportivo de A Coruña",
+        "GP": 4,
+        "GA": 7
+      },
+      {
+        "team": "Real Betis",
+        "GP": 4,
+        "GA": 7
+      },
+      {
+        "team": "Villarreal",
+        "GP": 5,
+        "GA": 7
+      },
+      {
+        "team": "Getafe",
+        "GP": 4,
+        "GA": 8
+      },
+      {
+        "team": "Málaga",
+        "GP": 4,
+        "GA": 8
+      },
+      {
+        "team": "Real Sociedad",
+        "GP": 4,
+        "GA": 9
+      },
+      {
+        "team": "Rayo Vallecano",
+        "GP": 4,
+        "GA": 12
+      },
+      {
+        "team": "Osasuna",
+        "GP": 4,
+        "GA": 15
+      },
+      {
+        "team": "R. Racing Club",
+        "GP": 4,
+        "GA": 16
+      }
+    ]
+  }
+}
