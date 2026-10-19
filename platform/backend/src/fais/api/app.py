@@ -5,8 +5,10 @@ from time import monotonic
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import PlainTextResponse
 
+from fais.api.admin import router as admin_router
 from fais.api.graphql import graphql_router
 from fais.api.identity import router as identity_router
 from fais.api.realtime import router as realtime_router
@@ -41,15 +43,17 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.repository = SportsRepository(database)
     app.state.celery = celery_app
     app.state.metrics = RequestMetrics()
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=list(current.allowed_hosts))
     app.add_middleware(
         CORSMiddleware,
         allow_origins=list(current.cors_origins),
         allow_credentials=True,
-        allow_methods=["GET", "POST", "OPTIONS"],
-        allow_headers=["Authorization", "Content-Type"],
+        allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allow_headers=["Authorization", "Content-Type", "X-Confirm-Action"],
     )
     app.include_router(rest_router)
     app.include_router(identity_router)
+    app.include_router(admin_router)
     app.include_router(realtime_router)
     app.include_router(graphql_router, prefix="/graphql")
 

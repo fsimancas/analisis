@@ -11,6 +11,7 @@ import { QualityPage } from './pages/quality'
 import { TeamPage } from './pages/team'
 import { TeamsPage } from './pages/teams'
 import { AccountPage } from './pages/account'
+import { AdminPage } from './pages/admin'
 
 const titles: Record<string, string> = {
   '/': 'Terminal de análisis',
@@ -19,6 +20,7 @@ const titles: Record<string, string> = {
   '/intelligence': 'Inteligencia de modelos',
   '/quality': 'Calidad de datos',
   '/account': 'Cuenta y preferencias',
+  '/admin': 'Administración de plataforma',
 }
 
 export default function App() {
@@ -45,6 +47,7 @@ export default function App() {
             <Route path="/intelligence" element={<IntelligencePage />} />
             <Route path="/quality" element={<QualityPage />} />
             <Route path="/account" element={<AccountPage />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </div>
       </main>

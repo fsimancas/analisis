@@ -18,6 +18,8 @@ celery_app.conf.update(
         "fais.workers.tasks.dispatch_outbox": {"queue": "writer"},
         "fais.workers.tasks.scan_inbox": {"queue": "writer"},
         "fais.workers.tasks.dispatch_notifications": {"queue": "writer"},
+        "fais.workers.tasks.run_backtest": {"queue": "writer"},
+        "fais.workers.tasks.train_xgboost": {"queue": "writer"},
     },
     beat_schedule={
         "dispatch-durable-outbox": {

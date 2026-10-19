@@ -9,6 +9,7 @@ __pycache__/
 data/*.sqlite3
 data/*.sqlite3-*
 data/models/
+data/uploads/
 logs/
 
 # Frontend

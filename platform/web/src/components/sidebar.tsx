@@ -1,4 +1,4 @@
-import { Activity, BrainCircuit, Database, Gauge, Radio, Settings2, Users } from 'lucide-react'
+import { Activity, BrainCircuit, Database, Gauge, Radio, Settings2, ShieldCheck, Users } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 const navigation = [
@@ -24,6 +24,7 @@ export function Sidebar() {
         ))}
       </nav>
       <div className="mt-auto space-y-1 border-t border-slate-800 pt-3">
+        <NavLink to="/admin" className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-xs text-slate-500 hover:text-slate-300"><ShieldCheck size={15} />Administración</NavLink>
         <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-xs text-slate-500 hover:text-slate-300"><Radio size={15} />Fuentes</button>
         <NavLink to="/account" className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-xs text-slate-500 hover:text-slate-300"><Settings2 size={15} />Cuenta</NavLink>
       </div>

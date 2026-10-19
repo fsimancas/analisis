@@ -14,6 +14,17 @@ ejecución.
 5. Instalar las unidades de `deploy/systemd/` y el `deploy/Caddyfile`.
 6. Activar `fais-api`, `fais-worker`, `fais-beat`, `fais-backup.timer`, Redis y Caddy.
 
+La instalación completa puede ejecutarse en un servidor Debian/Ubuntu limpio,
+sin contenedores, con:
+
+```bash
+sudo ./deploy/install-native.sh sports.example.com
+```
+
+El instalador compila Redis de forma nativa, instala Caddy, crea el usuario
+restringido `fais`, genera el secreto, compila React, valida la configuración y
+activa todos los servicios. No modifica un `/etc/fais/fais.env` ya existente.
+
 Generar el entorno sin mostrar el secreto en la terminal:
 
 ```bash
@@ -51,6 +62,8 @@ activa hasta validar REST, GraphQL y conteos.
 ./scripts/verify.sh
 curl http://127.0.0.1:8000/api/v1/readiness
 curl http://127.0.0.1:8000/metrics
+set -a; source /etc/fais/fais.env; set +a
+.venv/bin/python scripts/preflight_production.py --require-tls
 ```
 
 La exposición pública requiere HTTPS, un secreto aleatorio de al menos 32 bytes

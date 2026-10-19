@@ -17,10 +17,11 @@ def test_migrations_are_idempotent_and_foreign_keys_are_valid(tmp_path: Path) ->
         "008_notifications.sql",
         "009_feed_files.sql",
         "010_notification_deliveries.sql",
+        "011_administration.sql",
     ]
     assert migrate(database) == []
     with database.connect() as conn:
         assert conn.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
         assert conn.execute("PRAGMA foreign_key_check").fetchall() == []
         versions = conn.execute("SELECT count(*) FROM schema_migrations").fetchone()[0]
-        assert versions == 10
+        assert versions == 11

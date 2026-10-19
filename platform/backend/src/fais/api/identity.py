@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import json
+import time
 from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, EmailStr, Field
+from redis import Redis
 
 from fais.auth import AuthService
 from fais.db import Database
@@ -54,9 +56,32 @@ def current_user(
     return user
 
 
-def current_admin(user: Annotated[dict[str, Any], Depends(current_user)]) -> dict[str, Any]:
+def current_admin(
+    request: Request,
+    user: Annotated[dict[str, Any], Depends(current_user)],
+) -> dict[str, Any]:
     if user["role"] != "ADMIN":
         raise HTTPException(status_code=403, detail="Administrator role required")
+    try:
+        redis = Redis.from_url(
+            request.app.state.settings.redis_url,
+            socket_connect_timeout=0.2,
+            socket_timeout=0.2,
+        )
+        key = f"fais:admin-rate:{user['id']}:{int(time.time() // 60)}"
+        count = redis.incr(key)
+        if count == 1:
+            redis.expire(key, 70)
+        redis.close()
+        if count > 120:
+            raise HTTPException(status_code=429, detail="Administrative rate limit exceeded")
+    except HTTPException:
+        raise
+    except Exception as error:
+        if request.app.state.settings.environment == "production":
+            raise HTTPException(
+                status_code=503, detail="Administrative guard unavailable"
+            ) from error
     return user
 
 

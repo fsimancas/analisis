@@ -49,3 +49,15 @@ def test_prometheus_rules_cover_critical_dependencies() -> None:
     for alert in expected:
         assert f"alert: {alert}" in alerts
     assert 'targets: ["127.0.0.1:8000"]' in scrape
+
+
+def test_native_install_scripts_are_container_free_and_strict() -> None:
+    scripts = [
+        ROOT / "deploy/install-native.sh",
+        ROOT / "scripts/build_native_runtime.sh",
+    ]
+    for path in scripts:
+        content = path.read_text(encoding="utf-8")
+        assert "set -euo pipefail" in content
+        assert "docker" not in content.lower()
+        assert "podman" not in content.lower()

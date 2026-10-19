@@ -30,10 +30,21 @@ class InboxScanner:
         summary = InboxSummary()
         if not self.root.exists():
             return summary
+        with self.database.connect(readonly=True) as conn:
+            configured = conn.execute("SELECT count(*) FROM scraper_sources").fetchone()[0]
+            enabled = {
+                (row["country_slug"], row["competition_slug"])
+                for row in conn.execute(
+                    "SELECT country_slug, competition_slug FROM scraper_sources WHERE enabled=1"
+                )
+            }
         for path in sorted(self.root.glob("*/*/*.json")):
             summary.discovered += 1
             digest = hashlib.sha256(path.read_bytes()).hexdigest()
             relative = path.relative_to(self.root)
+            if configured and (relative.parts[0], relative.parts[1]) not in enabled:
+                summary.skipped += 1
+                continue
             with self.database.connect(readonly=True) as conn:
                 previous = conn.execute(
                     "SELECT sha256, status FROM feed_files WHERE path=?", (str(relative),)

@@ -18,12 +18,19 @@ def main() -> None:
     args = parser.parse_args()
     if args.output.exists():
         raise SystemExit(f"Refusing to overwrite existing file: {args.output}")
-    if any(char.isspace() for char in args.domain) or "/" in args.domain:
-        raise SystemExit("Domain must be a bare hostname")
+    if (
+        any(char.isspace() for char in args.domain)
+        or "/" in args.domain
+        or "." not in args.domain
+        or args.domain in {"localhost", "127.0.0.1"}
+    ):
+        raise SystemExit("Domain must be a public bare hostname")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     content = "\n".join(
         (
             "FAIS_ENVIRONMENT=production",
+            f"FAIS_DOMAIN={args.domain}",
+            f"FAIS_ALLOWED_HOSTS={args.domain},localhost,127.0.0.1",
             f"FAIS_DATABASE_PATH={args.database.resolve()}",
             f"FAIS_INBOX_PATH={args.inbox.resolve()}",
             "FAIS_REDIS_URL=redis://127.0.0.1:6379/0",

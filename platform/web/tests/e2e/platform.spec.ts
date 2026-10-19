@@ -11,6 +11,27 @@ async function mockApi(page: Page) {
     const path = new URL(route.request().url()).pathname
     let body: unknown = []
     if (path.endsWith('/overview')) body = overview
+    if (path.endsWith('/auth/me')) {
+      body = {
+        id: 1,
+        email: 'admin@example.com',
+        display_name: 'Administrator',
+        role: 'ADMIN',
+        active: 1,
+        created_at: '2026-10-19T00:00:00Z',
+      }
+    }
+    if (path.endsWith('/admin/summary')) body = { countries: 76, teams: 5490, audit_log: 12 }
+    if (path.endsWith('/admin/deployment/preflight')) {
+      body = {
+        ready: false,
+        environment: 'development',
+        domain: null,
+        database: '/data/fais.sqlite3',
+        redis: '127.0.0.1:6379/0',
+        issues: [],
+      }
+    }
     if (path.endsWith('/competitions')) {
       body = [{ id: 1, name: 'Primera A', country: 'Colombia', match_count: 380 }]
     }
@@ -58,4 +79,22 @@ test('navigation adapts to desktop and mobile', async ({ page }, testInfo) => {
     await expect(page.getByRole('navigation', { name: 'Navegación principal móvil' })).toBeHidden()
     await expect(page.getByRole('navigation', { name: 'Navegación principal', exact: true })).toBeVisible()
   }
+})
+
+test('administrator can access every control-plane section', async ({ page }) => {
+  await page.addInitScript(() => window.localStorage.setItem('fais_access_token', 'test-token'))
+  await page.goto('/admin')
+  await expect(page.getByRole('heading', { name: 'Administración', exact: true })).toBeVisible()
+  await expect(page.getByText('5.490')).toBeVisible()
+  for (const section of ['catalogo', 'ingestas', 'calidad', 'usuarios', 'modelos', 'auditoria', 'despliegue']) {
+    await page.getByRole('button', { name: section }).click()
+  }
+  await expect(page.getByText('Preflight de producción')).toBeVisible()
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)
+  expect(overflow).toBe(false)
+  const results = await new AxeBuilder({ page }).analyze()
+  const serious = results.violations.filter((violation) =>
+    ['critical', 'serious'].includes(violation.impact ?? ''),
+  )
+  expect(serious).toEqual([])
 })

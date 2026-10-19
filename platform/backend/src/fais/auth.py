@@ -76,12 +76,15 @@ class AuthService:
 
     def token(self, user: dict[str, Any]) -> str:
         now = datetime.now(UTC)
+        lifetime = self.settings.access_token_minutes
+        if user["role"] == "ADMIN":
+            lifetime = min(lifetime, 60)
         return jwt.encode(
             {
                 "sub": str(user["id"]),
                 "role": user["role"],
                 "iat": now,
-                "exp": now + timedelta(minutes=self.settings.access_token_minutes),
+                "exp": now + timedelta(minutes=lifetime),
             },
             self.settings.auth_secret,
             algorithm="HS256",

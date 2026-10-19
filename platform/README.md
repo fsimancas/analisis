@@ -28,6 +28,7 @@ volumen. Ningún proceso debe abrir SQLite a través de NFS.
 - Fase 10: exploradores de partidos/equipos, fichas, modelos y calidad.
 - Fase 11: usuarios, Argon2, JWT, roles, favoritos y alertas.
 - Fase 12: métricas, readiness, backups verificados y smoke test restaurable.
+- Fase 13: consola ADMIN con CRUD, cargas, jobs, calidad, usuarios, canales y auditoría.
 
 Consulta [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) para decisiones, límites y evolución.
 
@@ -60,6 +61,7 @@ Servicios disponibles:
 - GraphQL: `http://127.0.0.1:8000/graphql`
 - REST: `http://127.0.0.1:8000/api/v1`
 - Frontend: `http://127.0.0.1:5173`
+- Administración: `http://127.0.0.1:5173/admin` (requiere rol `ADMIN`)
 
 Redis es necesario para la cola distribuida y WebSocket, pero no para lecturas
 REST/GraphQL ni para migrar/importar datos. Si Redis cae, los eventos quedan en

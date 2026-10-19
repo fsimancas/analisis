@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from dataclasses import asdict
 
-from fais.analytics import PredictionEngine
+from fais.analytics import PredictionEngine, WalkForwardBacktest
+from fais.analytics.ml import XGBoostTrainer
 from fais.config import Settings
 from fais.db import Database
 from fais.db.migrate import migrate
@@ -27,11 +28,21 @@ def _runtime():
 def _complete_job(database: Database, job_id: str | None, result: dict) -> None:
     if job_id:
         JobStore(database).succeeded(job_id, result)
+        with database.transaction() as conn:
+            conn.execute(
+                "UPDATE admin_uploads SET status='SUCCEEDED', error=NULL WHERE job_id=?",
+                (job_id,),
+            )
 
 
 def _fail_job(database: Database, job_id: str | None, error: Exception) -> None:
     if job_id:
         JobStore(database).failed(job_id, f"{type(error).__name__}: {error}")
+        with database.transaction() as conn:
+            conn.execute(
+                "UPDATE admin_uploads SET status='FAILED', error=? WHERE job_id=?",
+                (str(error)[:1000], job_id),
+            )
 
 
 def _emit(database: Database, settings: Settings, topic: str, key: str, payload: dict) -> None:
@@ -91,22 +102,70 @@ def dispatch_outbox(limit: int = 100) -> dict[str, int]:
 
 
 @celery_app.task(name="fais.workers.tasks.scan_inbox")
-def scan_inbox() -> dict:
+def scan_inbox(job_id: str | None = None) -> dict:
     settings, database = _runtime()
-    return asdict(InboxScanner(database, settings.inbox_path).scan())
+    store = JobStore(database)
+    if job_id:
+        store.running(job_id)
+    try:
+        result = asdict(InboxScanner(database, settings.inbox_path).scan())
+        _complete_job(database, job_id, result)
+        return result
+    except Exception as error:
+        _fail_job(database, job_id, error)
+        raise
 
 
 @celery_app.task(name="fais.workers.tasks.dispatch_notifications")
 def dispatch_notifications(limit: int = 100) -> dict:
     settings, database = _runtime()
-    if not settings.alert_webhook_url:
+    with database.connect(readonly=True) as conn:
+        channel = conn.execute(
+            "SELECT webhook_url FROM alert_channels WHERE enabled=1 ORDER BY id LIMIT 1"
+        ).fetchone()
+    webhook_url = channel["webhook_url"] if channel else settings.alert_webhook_url
+    if not webhook_url:
         return {"configured": False, "delivered": 0, "failed": 0}
     result = dispatch_webhook_notifications(
         database,
-        WebhookNotifier(settings.alert_webhook_url, settings.alert_webhook_token),
+        WebhookNotifier(webhook_url, settings.alert_webhook_token),
         limit=limit,
     )
     return {"configured": True, **asdict(result)}
+
+
+@celery_app.task(name="fais.workers.tasks.run_backtest")
+def run_backtest(min_team_history: int = 3, job_id: str | None = None) -> dict:
+    _, database = _runtime()
+    store = JobStore(database)
+    if job_id:
+        store.running(job_id)
+    try:
+        result = WalkForwardBacktest(database).run(min_team_history=min_team_history)
+        _complete_job(database, job_id, result)
+        return result
+    except Exception as error:
+        _fail_job(database, job_id, error)
+        raise
+
+
+@celery_app.task(name="fais.workers.tasks.train_xgboost")
+def train_xgboost(promote: bool = False, job_id: str | None = None) -> dict:
+    _, database = _runtime()
+    store = JobStore(database)
+    if job_id:
+        store.running(job_id)
+    try:
+        result = asdict(
+            XGBoostTrainer(database, database.path.parent / "models").run(
+                promote_if_better=promote
+            )
+        )
+        _complete_job(database, job_id, result)
+        return result
+    except Exception as error:
+        _fail_job(database, job_id, error)
+        raise
 
 
 @celery_app.task(name="fais.workers.tasks.ingest_json")
