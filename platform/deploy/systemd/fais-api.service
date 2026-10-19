@@ -1,0 +1,24 @@
+[Unit]
+Description=FAIS FastAPI service
+After=network.target fais-redis.service
+Requires=fais-redis.service
+
+[Service]
+Type=simple
+User=fais
+Group=fais
+WorkingDirectory=/opt/fais/platform
+EnvironmentFile=/etc/fais/fais.env
+ExecStart=/opt/fais/platform/.venv/bin/uvicorn fais.api.app:create_app --factory --host 127.0.0.1 --port 8000 --workers 2
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/fais
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

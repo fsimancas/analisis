@@ -1,0 +1,39 @@
+groups:
+  - name: fais-platform
+    rules:
+      - alert: FaisApiDown
+        expr: up{job="fais-api"} == 0
+        for: 2m
+        labels: { severity: critical }
+        annotations:
+          summary: "FAIS API is unavailable"
+      - alert: FaisDatabaseUnavailable
+        expr: fais_database_up == 0
+        for: 1m
+        labels: { severity: critical }
+        annotations:
+          summary: "FAIS canonical SQLite database is unavailable"
+      - alert: FaisRedisUnavailable
+        expr: fais_redis_up == 0
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: "FAIS Redis event bus is unavailable"
+      - alert: FaisHighHttpErrorRate
+        expr: rate(fais_http_errors_total[5m]) / clamp_min(rate(fais_http_requests_total[5m]), 0.001) > 0.05
+        for: 10m
+        labels: { severity: warning }
+        annotations:
+          summary: "FAIS HTTP 5xx ratio exceeds 5%"
+      - alert: FaisOutboxBacklog
+        expr: fais_outbox_pending > 100
+        for: 10m
+        labels: { severity: warning }
+        annotations:
+          summary: "FAIS durable event outbox is accumulating"
+      - alert: FaisFailedNotificationDeliveries
+        expr: fais_notification_deliveries_failed > 20
+        for: 15m
+        labels: { severity: warning }
+        annotations:
+          summary: "FAIS outbound notification delivery is failing"

@@ -1,0 +1,28 @@
+[Unit]
+Description=FAIS HTTPS reverse proxy and web frontend
+After=network.target fais-api.service
+Wants=fais-api.service
+
+[Service]
+Type=notify
+User=fais
+Group=fais
+EnvironmentFile=/etc/fais/fais.env
+Environment=XDG_DATA_HOME=/var/lib/fais/caddy
+Environment=XDG_CONFIG_HOME=/var/lib/fais/caddy
+ExecStart=/opt/fais/runtime/caddy/caddy run --environ --config /etc/fais/Caddyfile
+ExecReload=/opt/fais/runtime/caddy/caddy reload --config /etc/fais/Caddyfile --force
+TimeoutStopSec=5s
+LimitNOFILE=1048576
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/fais/caddy
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=FAIS verified SQLite online backup
+
+[Service]
+Type=oneshot
+User=fais
+Group=fais
+ExecStart=/opt/fais/platform/.venv/bin/python /opt/fais/platform/scripts/backup_sqlite.py /var/lib/fais/fais.sqlite3 /var/backups/fais --keep 14
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/fais /var/backups/fais
+UMask=0027

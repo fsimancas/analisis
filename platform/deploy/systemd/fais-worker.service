@@ -1,0 +1,24 @@
+[Unit]
+Description=FAIS single-writer Celery worker
+After=network.target fais-redis.service
+Requires=fais-redis.service
+
+[Service]
+Type=simple
+User=fais
+Group=fais
+WorkingDirectory=/opt/fais/platform
+EnvironmentFile=/etc/fais/fais.env
+ExecStart=/opt/fais/platform/.venv/bin/celery -A fais.workers.celery_app:celery_app worker --loglevel=INFO --queues=writer --concurrency=1
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/fais
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

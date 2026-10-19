@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# Runtime data
+data/*.sqlite3
+data/*.sqlite3-*
+data/models/
+logs/
+
+# Frontend
+web/node_modules/
+web/dist/
+web/*.tsbuildinfo
+web/vite.config.js
+web/vite.config.d.ts
+web/test-results/
+web/playwright-report/
+
+# Local configuration
+.env
+*.local
+.runtime/

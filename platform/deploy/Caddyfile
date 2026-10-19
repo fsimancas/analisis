@@ -1,0 +1,25 @@
+{$FAIS_DOMAIN:localhost} {
+	encode zstd gzip
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy strict-origin-when-cross-origin
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		-Server
+	}
+
+	handle /api/* {
+		reverse_proxy 127.0.0.1:8000
+	}
+	handle /graphql* {
+		reverse_proxy 127.0.0.1:8000
+	}
+	handle /ws/* {
+		reverse_proxy 127.0.0.1:8000
+	}
+	handle {
+		root * /opt/fais/platform/web/dist
+		try_files {path} /index.html
+		file_server
+	}
+}
