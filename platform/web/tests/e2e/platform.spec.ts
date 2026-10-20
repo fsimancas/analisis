@@ -47,11 +47,39 @@ async function mockApi(page: Page) {
         away_score: null,
       }]
     }
+    if (path.endsWith('/analyst/workspace/runs')) body = []
+    if (path.endsWith('/analyst/workbooks')) body = []
+    if (path.includes('/analyst/workspace/montecarlo/')) {
+      body = {
+        id: 'simulation-1',
+        match_id: 1,
+        result: {
+          version: 'monte-carlo-poisson-v1',
+          iterations: 50000,
+          seed: 42,
+          expected_goals: { home: 1.5, away: 1 },
+          one_x_two: { home: 0.5, draw: 0.28, away: 0.22 },
+          markets: { over_2_5: 0.48, btts_yes: 0.5 },
+          top_scorelines: [],
+        },
+      }
+    }
+    if (path.endsWith('/odds/matches/1/value')) {
+      body = {
+        match_id: 1,
+        prediction_id: 1,
+        model_version: 'poisson-v1',
+        markets: [{ id: 1, provider: 'betplay', market_key: '1X2', selection_key: 'HOME', line: null, decimal_odd: 2.2, implied_probability: 0.45, fair_implied_probability: 0.42, overround: 1.08, model_probability: 0.52, expected_value: 0.144, edge: 0.1 }],
+      }
+    }
     await route.fulfill({ json: body })
   })
 }
 
-test.beforeEach(async ({ page }) => mockApi(page))
+test.beforeEach(async ({ page }) => {
+  await mockApi(page)
+  await page.addInitScript(() => window.localStorage.setItem('fais_access_token', 'test-token'))
+})
 
 test('dashboard is responsive and has no serious accessibility violations', async ({ page }, testInfo) => {
   await page.goto('/')
@@ -82,7 +110,6 @@ test('navigation adapts to desktop and mobile', async ({ page }, testInfo) => {
 })
 
 test('administrator can access every control-plane section', async ({ page }) => {
-  await page.addInitScript(() => window.localStorage.setItem('fais_access_token', 'test-token'))
   await page.goto('/admin')
   await expect(page.getByRole('heading', { name: 'Administración', exact: true })).toBeVisible()
   await expect(page.getByText('5.490')).toBeVisible()
@@ -97,6 +124,33 @@ test('administrator can access every control-plane section', async ({ page }) =>
     ['critical', 'serious'].includes(violation.impact ?? ''),
   )
   expect(serious).toEqual([])
+})
+
+test('role guard keeps a regular user out of administration', async ({ page }) => {
+  await page.route('**/api/v1/auth/me', (route) => route.fulfill({
+    json: {
+      id: 2,
+      email: 'user@example.com',
+      display_name: 'Regular user',
+      role: 'USER',
+      active: 1,
+      created_at: '2026-10-19T00:00:00Z',
+    },
+  }))
+  await page.goto('/admin')
+  await expect(page).toHaveURL(/\/$/)
+  await expect(page.getByRole('heading', { name: 'Panorama operativo' })).toBeVisible()
+})
+
+test('analyst workspace and odds terminal are interactive', async ({ page }) => {
+  await page.goto('/analyst')
+  await expect(page.getByRole('heading', { name: 'Mesa de análisis' })).toBeVisible()
+  await page.getByLabel('Partido').selectOption('1')
+  await page.getByRole('button', { name: 'Monte Carlo' }).click()
+  await expect(page.getByText('50.00%').first()).toBeVisible()
+  await page.goto('/odds')
+  await page.getByLabel('Partido para analizar cuotas').selectOption('1')
+  await expect(page.getByText('14.40%')).toBeVisible()
 })
 
 test('interactive product demo works without backend data', async ({ page }, testInfo) => {

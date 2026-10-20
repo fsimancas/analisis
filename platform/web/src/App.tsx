@@ -13,6 +13,11 @@ import { TeamsPage } from './pages/teams'
 import { AccountPage } from './pages/account'
 import { AdminPage } from './pages/admin'
 import { DemoPage } from './pages/demo'
+import { AnalystPage } from './pages/analyst'
+import { OddsPage } from './pages/odds'
+import { RequireRole } from './components/require-role'
+import { PlayerPage } from './pages/player'
+import { RefereePage } from './pages/referee'
 
 const titles: Record<string, string> = {
   '/': 'Terminal de análisis',
@@ -22,7 +27,12 @@ const titles: Record<string, string> = {
   '/quality': 'Calidad de datos',
   '/account': 'Cuenta y preferencias',
   '/admin': 'Administración de plataforma',
+  '/analyst': 'Mesa del analista',
+  '/odds': 'Cuotas y valor esperado',
 }
+
+const allRoles = ['USER', 'ANALYST', 'ADMIN'] as const
+const analystRoles = ['ANALYST', 'ADMIN'] as const
 
 export default function App() {
   const location = useLocation()
@@ -47,15 +57,19 @@ function PlatformShell() {
         </header>
         <div className="mx-auto max-w-[1600px] p-4 pb-20 md:p-6 md:pb-20 lg:pb-6">
           <Routes>
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/matches" element={<MatchesPage />} />
-            <Route path="/matches/:matchId" element={<MatchPage />} />
-            <Route path="/teams" element={<TeamsPage />} />
-            <Route path="/teams/:teamId" element={<TeamPage />} />
-            <Route path="/intelligence" element={<IntelligencePage />} />
-            <Route path="/quality" element={<QualityPage />} />
+            <Route path="/" element={<RequireRole roles={[...allRoles]}><DashboardPage /></RequireRole>} />
+            <Route path="/matches" element={<RequireRole roles={[...allRoles]}><MatchesPage /></RequireRole>} />
+            <Route path="/matches/:matchId" element={<RequireRole roles={[...allRoles]}><MatchPage /></RequireRole>} />
+            <Route path="/teams" element={<RequireRole roles={[...allRoles]}><TeamsPage /></RequireRole>} />
+            <Route path="/teams/:teamId" element={<RequireRole roles={[...allRoles]}><TeamPage /></RequireRole>} />
+            <Route path="/players/:playerId" element={<RequireRole roles={[...allRoles]}><PlayerPage /></RequireRole>} />
+            <Route path="/referees/:refereeId" element={<RequireRole roles={[...allRoles]}><RefereePage /></RequireRole>} />
+            <Route path="/odds" element={<RequireRole roles={[...allRoles]}><OddsPage /></RequireRole>} />
+            <Route path="/analyst" element={<RequireRole roles={[...analystRoles]}><AnalystPage /></RequireRole>} />
+            <Route path="/intelligence" element={<RequireRole roles={[...analystRoles]}><IntelligencePage /></RequireRole>} />
+            <Route path="/quality" element={<RequireRole roles={[...analystRoles]}><QualityPage /></RequireRole>} />
             <Route path="/account" element={<AccountPage />} />
-            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin" element={<RequireRole roles={['ADMIN']}><AdminPage /></RequireRole>} />
           </Routes>
         </div>
       </main>

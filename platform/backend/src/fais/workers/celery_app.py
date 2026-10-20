@@ -15,6 +15,7 @@ celery_app.conf.update(
         "fais.workers.tasks.import_legacy": {"queue": "writer"},
         "fais.workers.tasks.predict_match": {"queue": "writer"},
         "fais.workers.tasks.ingest_json": {"queue": "writer"},
+        "fais.workers.tasks.ingest_provider_file": {"queue": "writer"},
         "fais.workers.tasks.dispatch_outbox": {"queue": "writer"},
         "fais.workers.tasks.scan_inbox": {"queue": "writer"},
         "fais.workers.tasks.dispatch_notifications": {"queue": "writer"},

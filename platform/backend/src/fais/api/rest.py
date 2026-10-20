@@ -6,12 +6,19 @@ from celery import Celery
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from redis import Redis
 
-from fais.api.dependencies import get_database, get_repository
+from fais.api.dependencies import (
+    competition_scope,
+    current_analyst,
+    get_database,
+    get_repository,
+)
 from fais.db import Database
 from fais.db.repositories import SportsRepository
 from fais.jobs import JobStore
 
 router = APIRouter(prefix="/api/v1")
+Scope = Annotated[tuple[int, ...] | None, Depends(competition_scope)]
+Analyst = Annotated[dict[str, Any], Depends(current_analyst)]
 
 
 @router.get("/health", tags=["system"])
@@ -50,22 +57,26 @@ def readiness(request: Request) -> dict[str, Any]:
 
 
 @router.get("/overview", tags=["sports"])
-def overview(repo: Annotated[SportsRepository, Depends(get_repository)]) -> dict[str, Any]:
-    return repo.overview()
+def overview(
+    repo: Annotated[SportsRepository, Depends(get_repository)], scope: Scope
+) -> dict[str, Any]:
+    return repo.overview(scope)
 
 
 @router.get("/competitions", tags=["sports"])
 def competitions(
     repo: Annotated[SportsRepository, Depends(get_repository)],
+    scope: Scope,
     limit: Annotated[int, Query(ge=1, le=500)] = 100,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> list[dict[str, Any]]:
-    return repo.competitions(limit=limit, offset=offset)
+    return repo.competitions(limit=limit, offset=offset, allowed_competition_ids=scope)
 
 
 @router.get("/matches", tags=["sports"])
 def matches(
     repo: Annotated[SportsRepository, Depends(get_repository)],
+    scope: Scope,
     competition_id: int | None = None,
     team_id: int | None = None,
     status: str | None = None,
@@ -82,14 +93,15 @@ def matches(
         to_date=to_date,
         limit=limit,
         offset=offset,
+        allowed_competition_ids=scope,
     )
 
 
 @router.get("/matches/{match_id}", tags=["sports"])
 def match(
-    match_id: int, repo: Annotated[SportsRepository, Depends(get_repository)]
+    match_id: int, repo: Annotated[SportsRepository, Depends(get_repository)], scope: Scope
 ) -> dict[str, Any]:
-    result = repo.match(match_id)
+    result = repo.match(match_id, scope)
     if not result:
         raise HTTPException(status_code=404, detail="Match not found")
     return result
@@ -97,8 +109,10 @@ def match(
 
 @router.get("/matches/{match_id}/prediction", tags=["analytics"])
 def latest_prediction(
-    match_id: int, repo: Annotated[SportsRepository, Depends(get_repository)]
+    match_id: int, repo: Annotated[SportsRepository, Depends(get_repository)], scope: Scope
 ) -> dict[str, Any]:
+    if not repo.match(match_id, scope):
+        raise HTTPException(status_code=404, detail="Match not found")
     result = repo.latest_prediction(match_id)
     if not result:
         raise HTTPException(status_code=404, detail="Prediction not found")
@@ -110,6 +124,7 @@ def enqueue_prediction(
     match_id: int,
     request: Request,
     database: Annotated[Database, Depends(get_database)],
+    _: Analyst,
 ) -> dict[str, Any]:
     repo: SportsRepository = request.app.state.repository
     if not repo.match(match_id):
@@ -129,7 +144,11 @@ def enqueue_prediction(
 
 
 @router.get("/jobs/{job_id}", tags=["system"])
-def job(job_id: str, database: Annotated[Database, Depends(get_database)]) -> dict[str, Any]:
+def job(
+    job_id: str,
+    database: Annotated[Database, Depends(get_database)],
+    _: Analyst,
+) -> dict[str, Any]:
     result = JobStore(database).get(job_id)
     if not result:
         raise HTTPException(status_code=404, detail="Job not found")
@@ -139,6 +158,7 @@ def job(job_id: str, database: Annotated[Database, Depends(get_database)]) -> di
 @router.get("/quality/issues", tags=["quality"])
 def quality_issues(
     repo: Annotated[SportsRepository, Depends(get_repository)],
+    _: Analyst,
     limit: Annotated[int, Query(ge=1, le=500)] = 100,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> list[dict[str, Any]]:
@@ -146,25 +166,28 @@ def quality_issues(
 
 
 @router.get("/models", tags=["analytics"])
-def models(repo: Annotated[SportsRepository, Depends(get_repository)]) -> list[dict[str, Any]]:
+def models(
+    repo: Annotated[SportsRepository, Depends(get_repository)], _: Analyst
+) -> list[dict[str, Any]]:
     return repo.models()
 
 
 @router.get("/teams", tags=["sports"])
 def teams(
     repo: Annotated[SportsRepository, Depends(get_repository)],
+    scope: Scope,
     search: str | None = None,
     limit: Annotated[int, Query(ge=1, le=500)] = 100,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> list[dict[str, Any]]:
-    return repo.teams(search=search, limit=limit, offset=offset)
+    return repo.teams(search=search, limit=limit, offset=offset, allowed_competition_ids=scope)
 
 
 @router.get("/teams/{team_id}", tags=["sports"])
 def team(
-    team_id: int, repo: Annotated[SportsRepository, Depends(get_repository)]
+    team_id: int, repo: Annotated[SportsRepository, Depends(get_repository)], scope: Scope
 ) -> dict[str, Any]:
-    result = repo.team(team_id)
+    result = repo.team(team_id, scope)
     if not result:
         raise HTTPException(status_code=404, detail="Team not found")
     return result
@@ -173,6 +196,7 @@ def team(
 @router.get("/backtests", tags=["analytics"])
 def backtests(
     repo: Annotated[SportsRepository, Depends(get_repository)],
+    _: Analyst,
     limit: Annotated[int, Query(ge=1, le=100)] = 20,
 ) -> list[dict[str, Any]]:
     return repo.backtests(limit=limit)

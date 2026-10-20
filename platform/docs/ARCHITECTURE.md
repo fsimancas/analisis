@@ -52,12 +52,24 @@ Favoritos y alertas incluyen siempre `user_id` y las eliminaciones verifican la
 propiedad. Para exposición pública a gran escala se recomienda OIDC y tokens en
 cookies `HttpOnly` en lugar del almacenamiento local usado por el cliente actual.
 
+El control de acceso combina roles y alcance de datos. `USER` recibe una lista
+explícita en `user_competition_permissions`; este filtro se aplica en REST,
+GraphQL, favoritos, alertas, perfiles deportivos y eventos WebSocket. `ANALYST`
+opera sobre todas las competiciones y ejecuta simulaciones/backtests, mientras
+`ADMIN` añade gobierno de usuarios, fuentes, calidad, modelos y auditoría.
+
 ### Procesamiento e IA
 
 Celery distribuye trabajo y la cola `writer` serializa escrituras. El outbox
 durable desacopla los commits de Redis. El baseline `poisson-v1` calcula forma
 temporal regularizada, matriz de marcadores, 1X2, totales y ambos marcan. Cada
 predicción guarda cutoff, feature version, model version, input hash y payload.
+
+La simulación Monte Carlo ejecuta entre 1.000 y 100.000 muestras Poisson con
+semilla persistida. Produce 1X2, totales, ambos marcan y marcadores más probables.
+El servicio de cuotas normaliza la probabilidad implícita por margen de la casa
+y calcula `EV = probabilidad_modelo × cuota_decimal - 1` y el edge contra la
+probabilidad justa. Ninguno de estos resultados se presenta como garantía.
 
 El registro de modelos acepta artefactos XGBoost/PyTorch en una fase de datos
 maduros sin acoplarlos a la API. Un modelo no puede activarse hasta superar un
@@ -74,6 +86,25 @@ Pixi o D3 solo deben añadirse para vistas tácticas que realmente los necesiten
 Las rutas incluyen dashboard, partidos, ficha predictiva, equipos, forma,
 modelos/backtests, calidad y cuenta. El frontend no calcula probabilidades: solo
 representa artefactos versionados producidos por el backend.
+
+El workspace del analista reúne selección de partido, predicción en worker,
+Monte Carlo, backtests, ejecuciones históricas y cuadernos personales. Las fichas
+de partido y equipo enlazan plantillas, perfiles de jugador/árbitro, alineaciones,
+eventos y estadísticas. Solo `ANALYST`/`ADMIN` pueden publicar una alineación.
+
+### Integración controlada de proveedores
+
+La API nunca ejecuta Selenium ni comandos suministrados desde la web. Un admin
+habilita una fuente declarativa y carga un snapshot JSON en la bandeja. El
+worker valida ruta, proveedor, competición y tipo antes de escribir:
+
+- Flashscore `MATCHES`: calendario, estados y resultados mediante el adaptador incremental.
+- FotMob `DETAILS`: jugadores, plantillas, árbitros, alineaciones, eventos y estadísticas.
+- BetPlay `ODDS`: mercados, selecciones y cuotas decimales idempotentes.
+
+Los tipos también pueden combinarse cuando el contrato JSON es compatible,
+excepto `MATCHES`, que permanece ligado al adaptador Flashscore para no atribuir
+datos al proveedor equivocado.
 
 ## Escalado sin cambiar de arquitectura
 

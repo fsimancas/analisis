@@ -53,6 +53,15 @@ def test_identity_favorites_and_alerts_are_user_scoped(tmp_path: Path) -> None:
         )
         assert registration.status_code == 201
         token = registration.json()["access_token"]
+        with app.state.database.transaction() as conn:
+            user_id = conn.execute(
+                "SELECT id FROM users WHERE email='analyst@example.com'"
+            ).fetchone()[0]
+            conn.execute(
+                """INSERT INTO user_competition_permissions(user_id, competition_id)
+                VALUES (?, ?)""",
+                (user_id, competition),
+            )
         headers = {"Authorization": f"Bearer {token}"}
         assert client.get("/api/v1/auth/me", headers=headers).status_code == 200
         favorite = client.post("/api/v1/favorites", json={"team_id": teams[0]}, headers=headers)

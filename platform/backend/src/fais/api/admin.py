@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 
 from celery import Celery
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from fais.api.identity import current_admin
 from fais.db import Database
@@ -90,6 +90,19 @@ class UserUpdate(BaseModel):
     active: bool
 
 
+class CompetitionPermissionsInput(BaseModel):
+    competition_ids: list[int] = Field(default_factory=list, max_length=500)
+
+    @field_validator("competition_ids")
+    @classmethod
+    def unique_positive_ids(cls, value: list[int]) -> list[int]:
+        if any(identifier <= 0 for identifier in value):
+            raise ValueError("Competition identifiers must be positive")
+        if len(value) != len(set(value)):
+            raise ValueError("Competition identifiers must be unique")
+        return sorted(value)
+
+
 class ChannelInput(BaseModel):
     name: str = Field(min_length=2, max_length=80)
     webhook_url: str = Field(min_length=8, max_length=500)
@@ -100,7 +113,15 @@ class ScraperInput(BaseModel):
     name: str = Field(min_length=2, max_length=100)
     country_slug: str = Field(pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
     competition_slug: str = Field(pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+    provider_code: Literal["flashscore", "fotmob", "betplay"] = "flashscore"
+    ingestion_kind: Literal["MATCHES", "ODDS", "DETAILS"] = "MATCHES"
     enabled: bool = True
+
+    @model_validator(mode="after")
+    def supported_adapter(self):
+        if self.ingestion_kind == "MATCHES" and self.provider_code != "flashscore":
+            raise ValueError("MATCHES currently uses the Flashscore adapter")
+        return self
 
 
 class ReviewInput(BaseModel):
@@ -648,12 +669,84 @@ def update_user(identifier: int, body: UserUpdate, request: Request, actor: Admi
             "UPDATE users SET role=?, active=? WHERE id=?",
             (body.role, int(body.active), identifier),
         )
+        if body.role != "USER":
+            conn.execute("DELETE FROM user_competition_permissions WHERE user_id=?", (identifier,))
         after = dict(conn.execute("SELECT * FROM users WHERE id=?", (identifier,)).fetchone())
         after.pop("password_hash", None)
         safe_before = dict(before)
         safe_before.pop("password_hash", None)
         _audit(conn, request, actor, "UPDATE", "users", identifier, safe_before, after)
     return after
+
+
+@router.get("/users/{identifier}/competition-permissions")
+def user_competition_permissions(identifier: int, request: Request, _: Admin) -> list[dict]:
+    with request.app.state.database.connect(readonly=True) as conn:
+        if not conn.execute("SELECT 1 FROM users WHERE id=?", (identifier,)).fetchone():
+            raise HTTPException(status_code=404, detail="User not found")
+        rows = conn.execute(
+            """
+            SELECT p.competition_id, c.name AS competition, co.name AS country,
+                   p.granted_by, p.granted_at
+            FROM user_competition_permissions p
+            JOIN competitions c ON c.id=p.competition_id
+            LEFT JOIN countries co ON co.id=c.country_id
+            WHERE p.user_id=? ORDER BY co.name, c.name
+            """,
+            (identifier,),
+        ).fetchall()
+    return [dict(row) for row in rows]
+
+
+@router.put("/users/{identifier}/competition-permissions")
+def replace_user_competition_permissions(
+    identifier: int,
+    body: CompetitionPermissionsInput,
+    request: Request,
+    actor: Admin,
+) -> dict:
+    database: Database = request.app.state.database
+    with database.transaction() as conn:
+        user = _row(conn.execute("SELECT * FROM users WHERE id=?", (identifier,)).fetchone())
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        if user["role"] != "USER" and body.competition_ids:
+            raise HTTPException(
+                status_code=409,
+                detail="ANALYST and ADMIN already have global competition access",
+            )
+        existing = [
+            row[0]
+            for row in conn.execute(
+                "SELECT competition_id FROM user_competition_permissions WHERE user_id=?",
+                (identifier,),
+            )
+        ]
+        if body.competition_ids:
+            placeholders = ",".join("?" for _ in body.competition_ids)
+            found = conn.execute(
+                f"SELECT count(*) FROM competitions WHERE id IN ({placeholders})",
+                body.competition_ids,
+            ).fetchone()[0]
+            if found != len(body.competition_ids):
+                raise HTTPException(status_code=422, detail="Unknown competition identifier")
+        conn.execute("DELETE FROM user_competition_permissions WHERE user_id=?", (identifier,))
+        conn.executemany(
+            """INSERT INTO user_competition_permissions(user_id, competition_id, granted_by)
+            VALUES (?, ?, ?)""",
+            ((identifier, competition_id, actor["id"]) for competition_id in body.competition_ids),
+        )
+        _audit(
+            conn,
+            request,
+            actor,
+            "REPLACE_PERMISSIONS",
+            "users",
+            identifier,
+            before={"competition_ids": existing},
+            after={"competition_ids": body.competition_ids},
+        )
+    return {"user_id": identifier, "competition_ids": body.competition_ids}
 
 
 def _validate_webhook(request: Request, url: str) -> None:
@@ -726,10 +819,18 @@ def create_scraper(body: ScraperInput, request: Request, actor: Admin) -> dict:
         try:
             row = conn.execute(
                 """
-                INSERT INTO scraper_sources(name, country_slug, competition_slug, enabled)
-                VALUES (?, ?, ?, ?) RETURNING *
+                INSERT INTO scraper_sources(
+                    name, country_slug, competition_slug, provider_code, ingestion_kind, enabled
+                ) VALUES (?, ?, ?, ?, ?, ?) RETURNING *
                 """,
-                (body.name, body.country_slug, body.competition_slug, int(body.enabled)),
+                (
+                    body.name,
+                    body.country_slug,
+                    body.competition_slug,
+                    body.provider_code,
+                    body.ingestion_kind,
+                    int(body.enabled),
+                ),
             ).fetchone()
         except sqlite3.IntegrityError as error:
             raise HTTPException(status_code=409, detail="Scraper source already exists") from error
@@ -749,13 +850,16 @@ def update_scraper(identifier: int, body: ScraperInput, request: Request, actor:
             raise HTTPException(status_code=404, detail="Scraper source not found")
         conn.execute(
             """
-            UPDATE scraper_sources SET name=?, country_slug=?, competition_slug=?, enabled=?,
+            UPDATE scraper_sources SET name=?, country_slug=?, competition_slug=?,
+                provider_code=?, ingestion_kind=?, enabled=?,
                 updated_at=CURRENT_TIMESTAMP WHERE id=?
             """,
             (
                 body.name,
                 body.country_slug,
                 body.competition_slug,
+                body.provider_code,
+                body.ingestion_kind,
                 int(body.enabled),
                 identifier,
             ),
@@ -927,6 +1031,67 @@ async def upload_json(
             conn, request, actor, "UPLOAD", "admin_uploads", identifier, after={"job_id": job["id"]}
         )
     return {"upload_id": identifier, "job": job}
+
+
+@router.post("/uploads/provider", status_code=202)
+async def upload_provider_snapshot(
+    request: Request,
+    actor: Admin,
+    file: Annotated[UploadFile, File()],
+    provider_code: Annotated[Literal["flashscore", "fotmob", "betplay"], Form()],
+    ingestion_kind: Annotated[Literal["MATCHES", "ODDS", "DETAILS"], Form()],
+    country_slug: Annotated[str, Form()],
+    competition_slug: Annotated[str, Form()],
+    captured_on: Annotated[date, Form()],
+) -> dict:
+    database: Database = request.app.state.database
+    with database.connect(readonly=True) as conn:
+        enabled = conn.execute(
+            """SELECT 1 FROM scraper_sources WHERE provider_code=? AND ingestion_kind=?
+            AND country_slug=? AND competition_slug=? AND enabled=1""",
+            (provider_code, ingestion_kind, country_slug, competition_slug),
+        ).fetchone()
+    if not enabled:
+        raise HTTPException(status_code=409, detail="Enable the provider source before uploading")
+    root = request.app.state.settings.inbox_path / "_admin_uploads"
+    filename, path, size, digest = await _store_upload(file, root, {".json"})
+    try:
+        json.loads(path.read_text(encoding="utf-8-sig"))
+    except Exception as error:
+        path.unlink(missing_ok=True)
+        raise HTTPException(status_code=422, detail=f"Invalid provider JSON: {error}") from error
+    identifier = path.stem
+    _record_upload(database, identifier, actor, filename, path, "JSON", size, digest)
+    job = _queue_upload(
+        request,
+        identifier,
+        "fais.workers.tasks.ingest_provider_file",
+        [
+            str(path),
+            provider_code,
+            ingestion_kind,
+            country_slug,
+            competition_slug,
+            captured_on.isoformat(),
+        ],
+        f"INGEST_{provider_code.upper()}_{ingestion_kind}",
+    )
+    with database.transaction() as conn:
+        _audit(
+            conn,
+            request,
+            actor,
+            "UPLOAD",
+            "provider_snapshot",
+            identifier,
+            after={
+                "provider": provider_code,
+                "kind": ingestion_kind,
+                "sha256": digest,
+                "job_id": job["id"],
+            },
+        )
+    return {"upload_id": identifier, "sha256": digest, "job": job}
 
 
 @router.post("/uploads/sqlite", status_code=202)

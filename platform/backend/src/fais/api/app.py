@@ -9,8 +9,11 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import PlainTextResponse
 
 from fais.api.admin import router as admin_router
+from fais.api.analyst import router as analyst_router
+from fais.api.details import router as details_router
 from fais.api.graphql import graphql_router
 from fais.api.identity import router as identity_router
+from fais.api.odds import router as odds_router
 from fais.api.realtime import router as realtime_router
 from fais.api.rest import router as rest_router
 from fais.config import Settings
@@ -54,6 +57,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(rest_router)
     app.include_router(identity_router)
     app.include_router(admin_router)
+    app.include_router(analyst_router)
+    app.include_router(odds_router)
+    app.include_router(details_router)
     app.include_router(realtime_router)
     app.include_router(graphql_router, prefix="/graphql")
 

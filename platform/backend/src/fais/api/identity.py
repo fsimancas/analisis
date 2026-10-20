@@ -85,6 +85,48 @@ def current_admin(
     return user
 
 
+def _competition_ids(database: Database, user: dict[str, Any]) -> tuple[int, ...] | None:
+    if user["role"] in {"ANALYST", "ADMIN"}:
+        return None
+    with database.connect(readonly=True) as conn:
+        rows = conn.execute(
+            "SELECT competition_id FROM user_competition_permissions WHERE user_id=?",
+            (user["id"],),
+        ).fetchall()
+    return tuple(row[0] for row in rows)
+
+
+def _can_access_match(database: Database, user: dict[str, Any], match_id: int) -> bool:
+    allowed = _competition_ids(database, user)
+    if allowed is None:
+        query = "SELECT 1 FROM matches WHERE id=?"
+        values: list[Any] = [match_id]
+    elif not allowed:
+        return False
+    else:
+        placeholders = ",".join("?" for _ in allowed)
+        query = f"SELECT 1 FROM matches WHERE id=? AND competition_id IN ({placeholders})"
+        values = [match_id, *allowed]
+    with database.connect(readonly=True) as conn:
+        return conn.execute(query, values).fetchone() is not None
+
+
+def _can_access_team(database: Database, user: dict[str, Any], team_id: int) -> bool:
+    allowed = _competition_ids(database, user)
+    if allowed is None:
+        query = "SELECT 1 FROM teams WHERE id=?"
+        values: list[Any] = [team_id]
+    elif not allowed:
+        return False
+    else:
+        placeholders = ",".join("?" for _ in allowed)
+        query = f"""SELECT 1 FROM matches WHERE (home_team_id=? OR away_team_id=?)
+        AND competition_id IN ({placeholders}) LIMIT 1"""
+        values = [team_id, team_id, *allowed]
+    with database.connect(readonly=True) as conn:
+        return conn.execute(query, values).fetchone() is not None
+
+
 @router.post("/auth/register", status_code=201, tags=["identity"])
 def register(body: Registration, service: Annotated[AuthService, Depends(auth_service)]):
     try:
@@ -130,7 +172,12 @@ def favorites(request: Request, user: Annotated[dict[str, Any], Depends(current_
         rows = conn.execute(
             "SELECT * FROM favorites WHERE user_id=? ORDER BY created_at DESC", (user["id"],)
         ).fetchall()
-    return [dict(row) for row in rows]
+    return [
+        dict(row)
+        for row in rows
+        if (row["match_id"] is not None and _can_access_match(database, user, row["match_id"]))
+        or (row["team_id"] is not None and _can_access_team(database, user, row["team_id"]))
+    ]
 
 
 @router.post("/favorites", status_code=201, tags=["personalization"])
@@ -142,6 +189,13 @@ def add_favorite(
     if (body.match_id is None) == (body.team_id is None):
         raise HTTPException(status_code=422, detail="Provide exactly one match_id or team_id")
     database: Database = request.app.state.database
+    accessible = (
+        _can_access_match(database, user, body.match_id)
+        if body.match_id is not None
+        else _can_access_team(database, user, body.team_id)  # type: ignore[arg-type]
+    )
+    if not accessible:
+        raise HTTPException(status_code=404, detail="Resource not found")
     with database.transaction() as conn:
         conn.execute(
             """
@@ -182,7 +236,7 @@ def alerts(request: Request, user: Annotated[dict[str, Any], Depends(current_use
         rows = conn.execute(
             "SELECT * FROM alerts WHERE user_id=? ORDER BY created_at DESC", (user["id"],)
         ).fetchall()
-    return [dict(row) for row in rows]
+    return [dict(row) for row in rows if _can_access_match(database, user, row["match_id"])]
 
 
 @router.post("/alerts", status_code=201, tags=["personalization"])
@@ -192,6 +246,8 @@ def add_alert(
     user: Annotated[dict[str, Any], Depends(current_user)],
 ):
     database: Database = request.app.state.database
+    if not _can_access_match(database, user, body.match_id):
+        raise HTTPException(status_code=404, detail="Match not found")
     with database.transaction() as conn:
         conn.execute(
             """

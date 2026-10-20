@@ -5,6 +5,7 @@ from typing import Any
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 
+from fais.auth import AuthService
 from fais.db.repositories import SportsRepository
 
 
@@ -55,11 +56,30 @@ def _repo(info: strawberry.Info[Any, Any]) -> SportsRepository:
     return info.context["request"].app.state.repository
 
 
+def _scope(info: strawberry.Info[Any, Any]) -> tuple[int, ...] | None:
+    request = info.context["request"]
+    authorization = request.headers.get("Authorization", "")
+    if not authorization.startswith("Bearer "):
+        raise PermissionError("Authentication required")
+    service = AuthService(request.app.state.database, request.app.state.settings)
+    user = service.user_from_token(authorization.removeprefix("Bearer ").strip())
+    if not user:
+        raise PermissionError("Invalid access token")
+    if user["role"] in {"ADMIN", "ANALYST"}:
+        return None
+    with request.app.state.database.connect(readonly=True) as conn:
+        rows = conn.execute(
+            "SELECT competition_id FROM user_competition_permissions WHERE user_id=?",
+            (user["id"],),
+        ).fetchall()
+    return tuple(row[0] for row in rows)
+
+
 @strawberry.type
 class Query:
     @strawberry.field
     def overview(self, info: strawberry.Info[Any, Any]) -> Overview:
-        data = _repo(info).overview()
+        data = _repo(info).overview(_scope(info))
         return Overview(
             counts=PlatformCounts(**data["counts"]), open_quality_issues=data["open_quality_issues"]
         )
@@ -68,7 +88,12 @@ class Query:
     def competitions(
         self, info: strawberry.Info[Any, Any], limit: int = 100, offset: int = 0
     ) -> list[Competition]:
-        return [Competition(**row) for row in _repo(info).competitions(limit=limit, offset=offset)]
+        return [
+            Competition(**row)
+            for row in _repo(info).competitions(
+                limit=limit, offset=offset, allowed_competition_ids=_scope(info)
+            )
+        ]
 
     @strawberry.field
     def matches(
@@ -82,7 +107,11 @@ class Query:
         return [
             Match(**row)
             for row in _repo(info).matches(
-                competition_id=competition_id, status=status, limit=limit, offset=offset
+                competition_id=competition_id,
+                status=status,
+                limit=limit,
+                offset=offset,
+                allowed_competition_ids=_scope(info),
             )
         ]
 

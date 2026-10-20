@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict
+from datetime import date
 
 from fais.analytics import PredictionEngine, WalkForwardBacktest
 from fais.analytics.ml import XGBoostTrainer
@@ -11,6 +12,7 @@ from fais.events import EventPublisher, dispatch_pending
 from fais.ingestion import LegacyImporter
 from fais.ingestion.inbox import InboxScanner
 from fais.ingestion.json_feed import JsonMatchFeed
+from fais.ingestion.providers import ControlledProviderIngester
 from fais.jobs import EventOutbox, JobStore
 from fais.notification_delivery import WebhookNotifier, dispatch_webhook_notifications
 from fais.notifications import create_notifications
@@ -157,9 +159,7 @@ def train_xgboost(promote: bool = False, job_id: str | None = None) -> dict:
         store.running(job_id)
     try:
         result = asdict(
-            XGBoostTrainer(database, database.path.parent / "models").run(
-                promote_if_better=promote
-            )
+            XGBoostTrainer(database, database.path.parent / "models").run(promote_if_better=promote)
         )
         _complete_job(database, job_id, result)
         return result
@@ -176,8 +176,6 @@ def ingest_json(
     captured_on: str,
     job_id: str | None = None,
 ) -> dict:
-    from datetime import date
-
     settings, database = _runtime()
     store = JobStore(database)
     if job_id:
@@ -193,6 +191,43 @@ def ingest_json(
         )
         _complete_job(database, job_id, result)
         _emit(database, settings, "ingestion.completed", job_id or source_path, result)
+        return result
+    except Exception as error:
+        _fail_job(database, job_id, error)
+        raise
+
+
+@celery_app.task(name="fais.workers.tasks.ingest_provider_file")
+def ingest_provider_file(
+    source_path: str,
+    provider_code: str,
+    ingestion_kind: str,
+    country_slug: str,
+    competition_slug: str,
+    captured_on: str,
+    job_id: str | None = None,
+) -> dict:
+    settings, database = _runtime()
+    store = JobStore(database)
+    if job_id:
+        store.running(job_id)
+    try:
+        result = ControlledProviderIngester(database, settings.inbox_path).run(
+            source_path,
+            provider_code=provider_code,
+            ingestion_kind=ingestion_kind,
+            country_slug=country_slug,
+            competition_slug=competition_slug,
+            captured_on=date.fromisoformat(captured_on),
+        )
+        _complete_job(database, job_id, result)
+        _emit(
+            database,
+            settings,
+            "ingestion.completed",
+            f"provider:{provider_code}:{ingestion_kind}:{job_id}",
+            {"job_id": job_id, "provider": provider_code, "kind": ingestion_kind, **result},
+        )
         return result
     except Exception as error:
         _fail_job(database, job_id, error)

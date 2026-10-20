@@ -1,11 +1,11 @@
-import { Activity, BrainCircuit, Gauge, Menu, Users } from 'lucide-react'
+import { Activity, CircleDollarSign, Gauge, Menu, Users } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 const items = [
   { label: 'Inicio', icon: Gauge, to: '/' },
   { label: 'Partidos', icon: Activity, to: '/matches' },
   { label: 'Equipos', icon: Users, to: '/teams' },
-  { label: 'Modelos', icon: BrainCircuit, to: '/intelligence' },
+  { label: 'Cuotas', icon: CircleDollarSign, to: '/odds' },
   { label: 'Cuenta', icon: Menu, to: '/account' },
 ]
 

@@ -29,6 +29,9 @@ volumen. Ningún proceso debe abrir SQLite a través de NFS.
 - Fase 11: usuarios, Argon2, JWT, roles, favoritos y alertas.
 - Fase 12: métricas, readiness, backups verificados y smoke test restaurable.
 - Fase 13: consola ADMIN con CRUD, cargas, jobs, calidad, usuarios, canales y auditoría.
+- Fase 14: permisos por competición, guards por rol y WebSocket autenticado.
+- Fase 15: workspace ANALYST, Monte Carlo reproducible y análisis de cuotas/EV.
+- Fase 16: proveedores controlados y dominio de jugadores, árbitros, alineaciones y eventos.
 
 Consulta [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) para decisiones, límites y evolución.
 
@@ -62,6 +65,8 @@ Servicios disponibles:
 - REST: `http://127.0.0.1:8000/api/v1`
 - Frontend: `http://127.0.0.1:5173`
 - Administración: `http://127.0.0.1:5173/admin` (requiere rol `ADMIN`)
+- Mesa del analista: `http://127.0.0.1:5173/analyst` (rol `ANALYST` o `ADMIN`)
+- Cuotas y valor: `http://127.0.0.1:5173/odds` (respeta permisos por competición)
 
 Redis es necesario para la cola distribuida y WebSocket, pero no para lecturas
 REST/GraphQL ni para migrar/importar datos. Si Redis cae, los eventos quedan en
@@ -114,6 +119,8 @@ extensión neuronal cuando exista una ganancia medible.
 5. Los scrapers publican resultados, pero no conocen el esquema de la interfaz.
 6. Una fecha con día pero sin hora nunca se convierte artificialmente en una hora exacta.
 7. Contraseñas Argon2 y recursos personales siempre quedan aislados por usuario.
+8. `USER` solo consulta competiciones asignadas; `ANALYST` y `ADMIN` tienen alcance global.
+9. Los adaptadores de proveedores solo leen JSON validado dentro de `FAIS_INBOX_PATH`.
 
 ## Verificación
 

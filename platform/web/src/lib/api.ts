@@ -20,6 +20,12 @@ import type {
   AdminTeam,
   AuditEntry,
   DeploymentPreflight,
+  CompetitionPermission,
+  OddsValue,
+  MonteCarloResult,
+  AnalysisRun,
+  AnalystWorkbook,
+  MatchDetails,
 } from '../types'
 
 const apiBase = import.meta.env.VITE_API_URL ?? '/api/v1'
@@ -76,7 +82,10 @@ const destroy = <T>(path: string) => {
 }
 
 async function optionalRequest<T>(path: string): Promise<T | null> {
-  const response = await fetch(`${apiBase}${path}`, { headers: { Accept: 'application/json' } })
+  const token = window.localStorage.getItem('fais_access_token')
+  const response = await fetch(`${apiBase}${path}`, {
+    headers: { Accept: 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+  })
   if (response.status === 404) return null
   if (!response.ok) throw new Error(`${response.status} ${response.statusText}`)
   return response.json() as Promise<T>
@@ -137,6 +146,12 @@ export const api = {
   adminUsers: () => request<User[]>('/admin/users'),
   updateUser: (id: number, role: User['role'], active: boolean) =>
     mutate<User>(`/admin/users/${id}`, 'PUT', { role, active }),
+  userCompetitionPermissions: (id: number) =>
+    request<CompetitionPermission[]>(`/admin/users/${id}/competition-permissions`),
+  replaceCompetitionPermissions: (id: number, competition_ids: number[]) =>
+    mutate<{ user_id: number; competition_ids: number[] }>(
+      `/admin/users/${id}/competition-permissions`, 'PUT', { competition_ids },
+    ),
   channels: () => request<AdminChannel[]>('/admin/channels'),
   saveChannel: (id: number, body: { name: string; webhook_url: string; enabled: boolean }) =>
     mutate<AdminChannel>(`/admin/channels/${id}`, 'PUT', body),
@@ -150,9 +165,29 @@ export const api = {
   trainXgboost: () => mutate<AdminJob>('/admin/jobs/train-xgboost', 'POST'),
   uploadJson: (body: FormData) => upload('/admin/uploads/json', body),
   uploadSqlite: (body: FormData) => upload('/admin/uploads/sqlite', body),
+  uploadProvider: (body: FormData) => upload('/admin/uploads/provider', body),
   uploads: () => request<Array<Record<string, unknown>>>('/admin/uploads'),
   reviewModel: (id: number, decision: 'APPROVED' | 'REJECTED', notes = '') =>
     mutate(`/admin/models/${id}/review`, 'POST', { decision, notes }),
   audit: () => request<AuditEntry[]>('/admin/audit'),
   deploymentPreflight: () => request<DeploymentPreflight>('/admin/deployment/preflight'),
+  analystMatches: () => request<Match[]>('/analyst/workspace/matches?limit=200'),
+  analystPredict: (id: number) => mutate<AdminJob>(`/analyst/workspace/predict/${id}`, 'POST'),
+  monteCarlo: (id: number, iterations = 50000, seed = 42) =>
+    mutate<{ id: string; match_id: number; result: MonteCarloResult }>(
+      `/analyst/workspace/montecarlo/${id}`, 'POST', { iterations, seed },
+    ),
+  analysisRuns: (matchId?: number) =>
+    request<AnalysisRun[]>(`/analyst/workspace/runs${matchId ? `?match_id=${matchId}` : ''}`),
+  workbooks: () => request<AnalystWorkbook[]>('/analyst/workbooks'),
+  saveWorkbook: (body: { match_id?: number; title: string; notes: string; payload?: Record<string, unknown> }) =>
+    mutate<AnalystWorkbook>('/analyst/workbooks', 'POST', body),
+  analystBacktest: () => mutate<AdminJob>('/analyst/backtests', 'POST'),
+  oddsValue: (matchId: number) => request<OddsValue>(`/odds/matches/${matchId}/value`),
+  matchDetails: (matchId: number) => request<MatchDetails>(`/matches/${matchId}/details`),
+  teamSquad: (teamId: number) => request<Array<Record<string, unknown>>>(`/teams/${teamId}/squad`),
+  player: (playerId: number) => request<Record<string, unknown>>(`/players/${playerId}`),
+  referee: (refereeId: number) => request<Record<string, unknown>>(`/referees/${refereeId}`),
+  saveLineup: (matchId: number, body: Record<string, unknown>) =>
+    mutate(`/matches/${matchId}/lineups`, 'PUT', body),
 }

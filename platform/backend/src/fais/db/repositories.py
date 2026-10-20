@@ -11,37 +11,101 @@ from .connection import Database
 class SportsRepository:
     database: Database
 
-    def overview(self) -> dict[str, Any]:
+    @staticmethod
+    def _scope(
+        column: str, allowed_competition_ids: tuple[int, ...] | None
+    ) -> tuple[str, list[int]]:
+        if allowed_competition_ids is None:
+            return "", []
+        if not allowed_competition_ids:
+            return "1=0", []
+        placeholders = ",".join("?" for _ in allowed_competition_ids)
+        return f"{column} IN ({placeholders})", list(allowed_competition_ids)
+
+    def overview(self, allowed_competition_ids: tuple[int, ...] | None = None) -> dict[str, Any]:
         with self.database.connect(readonly=True) as conn:
-            counts = {
-                name: conn.execute(f"SELECT count(*) FROM {name}").fetchone()[0]
-                for name in ("countries", "competitions", "teams", "matches", "predictions")
-            }
+            scope, values = self._scope("c.id", allowed_competition_ids)
+            where = f"WHERE {scope}" if scope else ""
+            if allowed_competition_ids is None:
+                counts = {
+                    name: conn.execute(f"SELECT count(*) FROM {name}").fetchone()[0]
+                    for name in ("countries", "competitions", "teams", "matches", "predictions")
+                }
+            else:
+                counts = {
+                    "countries": conn.execute(
+                        f"SELECT count(DISTINCT c.country_id) FROM competitions c {where}", values
+                    ).fetchone()[0],
+                    "competitions": conn.execute(
+                        f"SELECT count(*) FROM competitions c {where}", values
+                    ).fetchone()[0],
+                    "teams": conn.execute(
+                        f"""
+                        SELECT count(DISTINCT team_id) FROM (
+                            SELECT m.home_team_id AS team_id FROM matches m
+                            JOIN competitions c ON c.id=m.competition_id {where}
+                            UNION
+                            SELECT m.away_team_id AS team_id FROM matches m
+                            JOIN competitions c ON c.id=m.competition_id {where}
+                        )
+                        """,
+                        [*values, *values],
+                    ).fetchone()[0],
+                    "matches": conn.execute(
+                        f"""SELECT count(*) FROM matches m
+                        JOIN competitions c ON c.id=m.competition_id {where}""",
+                        values,
+                    ).fetchone()[0],
+                    "predictions": conn.execute(
+                        f"""SELECT count(*) FROM predictions p
+                        JOIN matches m ON m.id=p.match_id
+                        JOIN competitions c ON c.id=m.competition_id {where}""",
+                        values,
+                    ).fetchone()[0],
+                }
+            match_scope, match_values = self._scope("competition_id", allowed_competition_ids)
+            match_where = f"WHERE {match_scope}" if match_scope else ""
             status = {
                 row[0]: row[1]
                 for row in conn.execute(
-                    "SELECT status, count(*) FROM matches GROUP BY status ORDER BY status"
+                    f"""SELECT status, count(*) FROM matches {match_where}
+                    GROUP BY status ORDER BY status""",
+                    match_values,
                 )
             }
-            open_quality = conn.execute(
-                "SELECT count(*) FROM data_quality_issues WHERE resolved_at IS NULL"
-            ).fetchone()[0]
+            open_quality = (
+                0
+                if allowed_competition_ids is not None
+                else conn.execute(
+                    "SELECT count(*) FROM data_quality_issues WHERE resolved_at IS NULL"
+                ).fetchone()[0]
+            )
         return {"counts": counts, "matches_by_status": status, "open_quality_issues": open_quality}
 
-    def competitions(self, *, limit: int = 100, offset: int = 0) -> list[dict[str, Any]]:
+    def competitions(
+        self,
+        *,
+        limit: int = 100,
+        offset: int = 0,
+        allowed_competition_ids: tuple[int, ...] | None = None,
+    ) -> list[dict[str, Any]]:
+        scope, values = self._scope("c.id", allowed_competition_ids)
+        where = f"WHERE {scope}" if scope else ""
+        values.extend((min(max(limit, 1), 500), max(offset, 0)))
         with self.database.connect(readonly=True) as conn:
             rows = conn.execute(
-                """
+                f"""
                 SELECT c.id, c.slug, c.name, c.sport, c.active,
                        co.name AS country, count(m.id) AS match_count
                 FROM competitions c
                 LEFT JOIN countries co ON co.id=c.country_id
                 LEFT JOIN matches m ON m.competition_id=c.id
+                {where}
                 GROUP BY c.id
                 ORDER BY co.name, c.name
                 LIMIT ? OFFSET ?
                 """,
-                (min(max(limit, 1), 500), max(offset, 0)),
+                values,
             ).fetchall()
         return [dict(row) for row in rows]
 
@@ -55,9 +119,14 @@ class SportsRepository:
         to_date: str | None = None,
         limit: int = 100,
         offset: int = 0,
+        allowed_competition_ids: tuple[int, ...] | None = None,
     ) -> list[dict[str, Any]]:
         clauses: list[str] = []
         values: list[Any] = []
+        scope, scope_values = self._scope("m.competition_id", allowed_competition_ids)
+        if scope:
+            clauses.append(scope)
+            values.extend(scope_values)
         if competition_id is not None:
             clauses.append("m.competition_id=?")
             values.append(competition_id)
@@ -96,10 +165,23 @@ class SportsRepository:
         return [dict(row) for row in rows]
 
     def teams(
-        self, *, search: str | None = None, limit: int = 100, offset: int = 0
+        self,
+        *,
+        search: str | None = None,
+        limit: int = 100,
+        offset: int = 0,
+        allowed_competition_ids: tuple[int, ...] | None = None,
     ) -> list[dict[str, Any]]:
-        where = "WHERE t.normalized_name LIKE ?" if search else ""
-        values: list[Any] = [f"%{search.casefold()}%"] if search else []
+        clauses: list[str] = []
+        values: list[Any] = []
+        if search:
+            clauses.append("t.normalized_name LIKE ?")
+            values.append(f"%{search.casefold()}%")
+        scope, scope_values = self._scope("m.competition_id", allowed_competition_ids)
+        if scope:
+            clauses.append(scope)
+            values.extend(scope_values)
+        where = "WHERE " + " AND ".join(clauses) if clauses else ""
         values.extend((min(max(limit, 1), 500), max(offset, 0)))
         with self.database.connect(readonly=True) as conn:
             rows = conn.execute(
@@ -118,8 +200,19 @@ class SportsRepository:
             ).fetchall()
         return [dict(row) for row in rows]
 
-    def team(self, team_id: int) -> dict[str, Any] | None:
+    def team(
+        self, team_id: int, allowed_competition_ids: tuple[int, ...] | None = None
+    ) -> dict[str, Any] | None:
+        scope, values = self._scope("m.competition_id", allowed_competition_ids)
         with self.database.connect(readonly=True) as conn:
+            if scope:
+                allowed = conn.execute(
+                    f"""SELECT 1 FROM matches m WHERE (m.home_team_id=? OR m.away_team_id=?)
+                    AND {scope} LIMIT 1""",
+                    [team_id, team_id, *values],
+                ).fetchone()
+                if not allowed:
+                    return None
             team = conn.execute(
                 """
                 SELECT t.id, t.canonical_name AS name, co.name AS country
@@ -129,15 +222,18 @@ class SportsRepository:
             ).fetchone()
             if not team:
                 return None
+            match_scope, match_values = self._scope("competition_id", allowed_competition_ids)
+            scope_sql = f"AND {match_scope}" if match_scope else ""
             rows = conn.execute(
-                """
+                f"""
                 SELECT id, home_team_id, away_team_id, home_score, away_score, kickoff_date
                 FROM matches
                 WHERE status='FINISHED' AND (home_team_id=? OR away_team_id=?)
                   AND home_score IS NOT NULL
+                  {scope_sql}
                 ORDER BY COALESCE(kickoff_utc, kickoff_date || 'T00:00:00Z') DESC, id DESC
                 """,
-                (team_id, team_id),
+                [team_id, team_id, *match_values],
             ).fetchall()
         wins = draws = losses = goals_for = goals_against = 0
         form: list[str] = []
@@ -164,19 +260,23 @@ class SportsRepository:
             "form": form,
         }
 
-    def match(self, match_id: int) -> dict[str, Any] | None:
+    def match(
+        self, match_id: int, allowed_competition_ids: tuple[int, ...] | None = None
+    ) -> dict[str, Any] | None:
+        scope, values = self._scope("m.competition_id", allowed_competition_ids)
+        scope_sql = f"AND {scope}" if scope else ""
         with self.database.connect(readonly=True) as conn:
             row = conn.execute(
-                """
+                f"""
                 SELECT m.*, c.name AS competition,
                        ht.canonical_name AS home_team, at.canonical_name AS away_team
                 FROM matches m
                 JOIN competitions c ON c.id=m.competition_id
                 JOIN teams ht ON ht.id=m.home_team_id
                 JOIN teams at ON at.id=m.away_team_id
-                WHERE m.id=?
+                WHERE m.id=? {scope_sql}
                 """,
-                (match_id,),
+                [match_id, *values],
             ).fetchone()
         return dict(row) if row else None
 

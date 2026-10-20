@@ -176,7 +176,75 @@ export interface AdminScraper {
   name: string
   country_slug: string
   competition_slug: string
+  provider_code: 'flashscore' | 'fotmob' | 'betplay'
+  ingestion_kind: 'MATCHES' | 'ODDS' | 'DETAILS'
   enabled: number
+}
+
+export interface CompetitionPermission {
+  competition_id: number
+  competition: string
+  country: string | null
+  granted_by: number | null
+  granted_at: string
+}
+
+export interface OddsValue {
+  match_id: number
+  prediction_id: number
+  model_version: string
+  markets: Array<{
+    id: number
+    provider: string
+    market_key: string
+    selection_key: string
+    line: number | null
+    decimal_odd: number
+    implied_probability: number
+    fair_implied_probability: number
+    overround: number
+    model_probability: number | null
+    expected_value: number | null
+    edge: number | null
+  }>
+}
+
+export interface MonteCarloResult {
+  version: string
+  iterations: number
+  seed: number
+  expected_goals: { home: number; away: number }
+  one_x_two: { home: number; draw: number; away: number }
+  markets: Record<string, number>
+  top_scorelines: Array<{ home: number; away: number; probability: number }>
+}
+
+export interface AnalysisRun {
+  id: string
+  match_id: number
+  analysis_type: string
+  status: string
+  parameters: Record<string, unknown>
+  result: MonteCarloResult | null
+  created_at: string
+}
+
+export interface AnalystWorkbook {
+  id: string
+  match_id: number | null
+  title: string
+  notes: string
+  payload: Record<string, unknown>
+  created_at: string
+  updated_at: string
+}
+
+export interface MatchDetails {
+  match: Match & { home_team_id: number; away_team_id: number }
+  lineups: Array<Record<string, unknown> & { id: number; team: string; players: Array<Record<string, unknown>> }>
+  referees: Array<{ id: number; name: string; category: string | null; role: string }>
+  events: Array<Record<string, unknown>>
+  team_statistics: Array<Record<string, unknown>>
 }
 
 export interface AuditEntry {
